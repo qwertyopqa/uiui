@@ -14,10 +14,14 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
-        run: npm install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
       - name: build proj
-        run: npm run build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
       - name: Publish package
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
