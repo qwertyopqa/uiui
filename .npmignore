@@ -1,0 +1,15 @@
+.git/
+.github/
+.husky/
+docs/
+example/
+node_modules/
+src/
+./.*
+./CODE_OF_CONDUCT.md
+./CONTRIBUTING.md
+./rollup.config.js
+./tsconfig.json
+./yarn.lock
+./commitlint.config.js
+./jest.config.js

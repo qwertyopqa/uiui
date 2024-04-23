@@ -1,0 +1,48 @@
+
+.uiColorRamp {
+  display: inline-flex;
+  flex-flow: column;
+  align-items: end;
+  position: relative;
+  min-width: 100px;
+  [role="handle"] {
+    width: 9px;
+    height: 9px;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    font-size: 8px;
+    color: #fff;
+    font-weight: 700;
+    &[data-key="r"] {
+      background-color: #b00;
+    }
+    &[data-key="g"] {
+      background-color: #0b0;
+    }
+    &[data-key="b"] {
+      background-color: #00b;
+    }
+  }
+}
+.uiColorRampComps {
+  display: inline-flex;
+  flex-flow: column;
+  align-items: end;
+  margin:0;
+  padding:0;
+  > li {
+    display: flex;
+    line-height: 0.8em;
+    align-items: center;
+  }
+}
+
+.uiColorRampPreview {
+  width: calc(100% - 2px);
+  height: 100px;
+  position: relative;
+  margin: 0px 2px 3px;
+}
+
+
+
