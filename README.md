@@ -1,7 +1,7 @@
 # UiUi
 
-[![NPM](https://img.shields.io/npm/v/uiui.svg)](https://www.npmjs.com/package/uiui)
-[![npm](https://img.shields.io/npm/dm/uiui.svg)](https://www.npmjs.com/package/uiui)
+[![NPM](https://img.shields.io/npm/v/@opqa/uiui.svg)](https://www.npmjs.com/package/@opqa/uiui)
+[![npm](https://img.shields.io/npm/dm/@opqa/uiui.svg)](https://www.npmjs.com/package/@opqa/uiui)
 ![GitHub](https://img.shields.io/github/license/qwertyopqa/uiui)
 
 UiUi aims to provide the most minimalistic + small yet readable Gui.
