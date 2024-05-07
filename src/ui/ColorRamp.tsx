@@ -1,9 +1,13 @@
 import React from 'react';
 import { Config } from '../config';
-
 import { SIX_NUMBERS, THREE_NUMBERS, TWO_NUMBERS } from 'utils/numbers';
-import styles from './ColorRamp.module.scss';
+
 import { XY } from './utils/XY';
+import { UiUiLabel } from './utils/Label';
+
+import { Styles } from '../styles';
+import RampStyles from './ColorRamp.module.scss';
+Styles.register('ColorRamp', RampStyles);
 
 const rampShaderCode = `#version 300 es
 precision mediump float;
@@ -19,9 +23,9 @@ void main(){
   fragColor = vec4(c ,1.);
 }`;
 
-type Args = Config.Args<Config.Obj<'color_ramp', [], SIX_NUMBERS>>;
+type Obj = Config.Obj<'color_ramp', [], SIX_NUMBERS>;
 
-export function UiUiColorRamp({ o, onChange }: Args) {
+export function UiUiColorRamp({ o, onChange }: Config.Args<Obj>) {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const [values, setValues] = React.useState(o.value);
 
@@ -62,9 +66,13 @@ export function UiUiColorRamp({ o, onChange }: Args) {
   };
 
   return (
-    <div ref={wrapperRef} className={styles.uiColorRamp}>
+    <div
+      rel="panel"
+      ref={wrapperRef}
+      className={Styles.of('ColorRamp.element')}
+    >
+      {UiUiLabel.build({ label: o.label, orientation: 'v' })}
       <XY.Pad
-        className={styles.cr_pad}
         background={
           <XY.Canvas.Bckgd
             fragShaderCode={rampShaderCode}
@@ -96,7 +104,8 @@ export function UiUiColorRamp({ o, onChange }: Args) {
   );
 }
 
-function boot(o: Args['o'], onChange?: Args['onChange']) {
-  return <UiUiColorRamp key={o.label} o={o} onChange={onChange} />;
-}
-Config.register(UiUiColorRamp, 'color_ramp', boot);
+const builder: Config.Builder<Obj, {}> = (o, opts) => {
+  return <UiUiColorRamp key={o.label} o={o} onChange={opts.onChange} />;
+};
+
+Config.register(UiUiColorRamp, 'color_ramp', builder);

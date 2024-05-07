@@ -1,0 +1,15 @@
+@import '../../node_modules/uiui/src/ui/Panel.module';
+
+.UiUiPanel_Root {
+  @extend %UiUiPanel_Root;
+  background: var(--panel-background);
+  > label {
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: var(--u1) var(--u1) 0 0;
+    margin: -3px -3px var(--u1);
+    padding: calc(var(--u1) + 1px) var(--u2) ;
+    margin-bottom: var(--u1);
+  }
+}
+

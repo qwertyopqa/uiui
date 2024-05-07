@@ -1,16 +1,24 @@
 import React from 'react';
-import styles from './UiUi.module.scss';
+import RootStyles from './Root.module.scss';
+import { Theme } from './styles';
 import { UiUiUtilLayer } from 'ui/utils/GlobalLayer';
 
 import { Config } from './config';
 
 type Args = {
   data: Config.Json | Config.ProcessorInfo | null;
-  defaultDock?: string;
+  defaultDock?: 'T' | 'B';
   top?: Config.Json | Config.ProcessorInfo | null;
   bottom?: Config.Json | Config.ProcessorInfo | null;
+  theme?: string;
 };
-export function RootElem({ data, top, bottom, defaultDock = 'B' }: Args) {
+export function RootElem({
+  data,
+  top,
+  bottom,
+  defaultDock = 'B',
+  theme = 'base',
+}: Args) {
   const [tElems, setTElems] = React.useState<JSX.Element[]>([]);
   const [bElems, setBElems] = React.useState<JSX.Element[]>([]);
 
@@ -19,7 +27,9 @@ export function RootElem({ data, top, bottom, defaultDock = 'B' }: Args) {
   }
 
   const pushElems = React.useCallback(
-    (els: JSX.Element[], dock: 'T' | 'B') => {
+    (cfg: Config.Json, dock: 'T' | 'B') => {
+      const opts = { onChange, isRoot: true, outterFlow: 'row' };
+      const els = Config.renderPanels(cfg, opts);
       if (dock === 'T') {
         setTElems([...tElems, ...els]);
       } else {
@@ -33,30 +43,28 @@ export function RootElem({ data, top, bottom, defaultDock = 'B' }: Args) {
     if (data === null && top === null && bottom === null) return;
     if (data !== null) {
       const pdata = Array.isArray(data) ? data : Config.process(data);
-      if (defaultDock === 'B') {
-        setBElems(Config.render(pdata, onChange));
-      } else {
-        setTElems(Config.render(pdata, onChange));
-      }
+      pushElems(pdata, defaultDock);
     }
     if (top) {
       const pdata = Array.isArray(top) ? top : Config.process(top);
-      pushElems(Config.render(pdata, onChange), 'T');
+      pushElems(pdata, 'T');
     }
     if (bottom) {
       const pdata = Array.isArray(bottom) ? bottom : Config.process(bottom);
-      pushElems(Config.render(pdata, onChange), 'B');
+      pushElems(pdata, 'B');
     }
   }, [data, bottom, top, defaultDock]);
 
+  const getThemeClassName = (key: string) => Theme.of(key) ?? Theme.of('base');
+
   return (
-    <div className={`${styles.uiUiRoot} ${styles.vars}`}>
+    <div className={`${RootStyles.uiUiRoot} ${getThemeClassName(theme)}`}>
       <UiUiUtilLayer></UiUiUtilLayer>
-      <div className={styles.docks}>
-        <div rel="dock" className={styles.topDock}>
+      <div className={RootStyles.docks}>
+        <div rel="dock" className={RootStyles.topDock}>
           {tElems}
         </div>
-        <div rel="dock" className={styles.bottomDock}>
+        <div rel="dock" className={RootStyles.bottomDock}>
           {bElems}
         </div>
       </div>

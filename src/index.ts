@@ -1,4 +1,4 @@
-import { RootElem } from './RootElem';
+import { RootElem } from './Root';
 import { Config as CFG } from './config';
 import { UiUiPanel } from './ui/Panel';
 import { UiUiSlider } from './ui/Slider';
@@ -9,7 +9,7 @@ import { UiUiSine } from './ui/Sine';
 import { UiUiSelect } from './ui/Select';
 import type * as TypeUtils from './utils/numbers';
 import { UiUiGroup } from './ui/Group';
-import { Styles as ST } from './styles';
+import { Styles as ST, Theme as TH } from './styles';
 import { UiUiCanvas } from './utils/Canvas';
 
 CFG.enable([
@@ -28,6 +28,7 @@ export namespace UiUi {
   /* eslint-disable no-unused-vars */
   export import Config = CFG;
   export import Styles = ST;
+  export import Theme = TH;
   /* eslint-enable */
   export namespace Types {
     export type THREE_NUMBERS = TypeUtils.THREE_NUMBERS;

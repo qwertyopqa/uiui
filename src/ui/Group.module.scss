@@ -1,25 +1,50 @@
-.uiGroup {
+%UiUiGroup_Base {
   display: inline-flex;
   flex-flow: column;
+  align-items: center;
   align-items: stretch;
   margin: 0;
   width: 100%;
   min-width: 50px;
-  &[data-flow="row"] {
-    flex-flow: row;
-    align-items: center;
-  }
-  > [rel="panel"] {
-    margin: 3px 0 0 0;
-    padding: 0 0 0 4px;
-    background: none;
-    border-top:none;
-    border-right:none;
-    border-bottom:none;
-    border-left: 1px solid #aaa;
-    border-radius: 0;
-  }
+}
+
+%UiUiGroup_Row {
+  flex-flow: row;
   > * {
-    margin: 3px 0 0;
+    margin: 0 var(--elements-margin) !important;
+    &:first-child {
+      margin-left: 0 !important;
+    }
   }
+  > [data-type="panel"] {
+    &:not(:has(>label)) {
+      padding-top: var(--panel-padding-vertical);
+      border-top: 1px solid var(--label-color);
+    }
+
+  }
+}
+
+%UiUiGroup_Col {
+  flex-flow: column;
+  > * {
+    margin: var(--elements-margin) 0 !important;
+    &:first-child {
+      margin-top: 0 !important;
+    }
+  }
+  > [data-type="panel"] {
+    padding-left: var(--panel-padding-horizontal);
+    border-left: 1px solid var(--label-color);
+  }
+}
+
+.Base {
+  @extend %UiUiGroup_Base;
+}
+.Row {
+  @extend %UiUiGroup_Row;
+}
+.Col {
+  @extend %UiUiGroup_Col;
 }

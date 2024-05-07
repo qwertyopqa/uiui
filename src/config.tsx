@@ -3,7 +3,15 @@ type ConstructorArgs<O> = {
   onChange?: (o: O) => void;
 };
 type ElemConstructor<O = any> = (a: ConstructorArgs<O>) => JSX.Element;
-type ElemBuilder = (a: any, onChange?: (o: any) => void) => JSX.Element;
+type ElemBuilderOpts = {
+  onChange?: (o: any) => void;
+  isRoot?: boolean;
+  [key: string]: any;
+};
+type ElemBuilder<CFG extends Object = any> = (
+  a: CFG,
+  opts: ElemBuilderOpts
+) => JSX.Element;
 
 type ElemRegistryEntry<O> = {
   cfgKey: string;
@@ -18,6 +26,7 @@ type ElemRegistry = {
 const registry: ElemRegistry = {};
 
 export namespace Config {
+  export type Builder<A, B> = ElemBuilder<Alt<A, B>>;
   export type Obj<T, S, V> = {
     type?: T;
     label: string;
@@ -56,10 +65,10 @@ export namespace Config {
     };
     source: string;
   };
-  export function register<O>(
+  export function register<O, B extends Object = {}>(
     e: ElemConstructor<O>,
     k: string,
-    b: ElemBuilder
+    b: ElemBuilder<Alt<O, B>>
   ) {
     registry[e.name] = {
       cfgKey: k,
@@ -127,7 +136,7 @@ export namespace Config {
   };
   export const render = (
     els: Elem | Elem[],
-    onChange?: (o: any) => void
+    opts: ElemBuilderOpts
   ): JSX.Element[] => {
     if (!Array.isArray(els)) {
       els = [els];
@@ -136,7 +145,25 @@ export namespace Config {
     els.map((e: Elem) => {
       const reg = withElemType(e.type);
       if (reg && reg.enabled) {
-        const build = reg.builder(e, onChange);
+        const build = reg.builder(e, opts);
+        ret.push(build);
+      }
+      return e;
+    });
+    return ret;
+  };
+  export const renderPanels = (
+    els: Elem | Elem[],
+    opts: ElemBuilderOpts
+  ): JSX.Element[] => {
+    if (!Array.isArray(els)) {
+      els = [els];
+    }
+    const ret: JSX.Element[] = [];
+    els.map((e: Elem) => {
+      const reg = withElemType(e.type);
+      if (reg && reg.enabled) {
+        const build = reg.builder(e, opts);
         ret.push(build);
       }
       return e;

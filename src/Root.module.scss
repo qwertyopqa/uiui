@@ -1,0 +1,27 @@
+@import './UiUi';
+
+%dock {
+  position: relative;
+  padding: var(--dock-padding);
+  background: var(--dock-background);
+}
+
+.uiUiRoot {
+  @include UiUiBaseTheme;
+  @include absolute;
+  .docks {
+    @include absolute;
+    @include flex(column, space-between);
+  }
+  .topDock {
+    @extend %dock;
+    @include flex(row, start, start);
+  }
+  .bottomDock {
+    @extend %dock;
+    @include flex(row, start, end);
+  }
+}
+
+
+

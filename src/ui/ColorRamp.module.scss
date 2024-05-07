@@ -1,10 +1,7 @@
-
-.uiColorRamp {
-  display: inline-flex;
-  flex-flow: column;
-  align-items: end;
-  position: relative;
+%UiUiColorRamp {
   min-width: 100px;
+  display: inline-flex;
+  flex-direction: row;
   [role="handle"] {
     width: 9px;
     height: 9px;
@@ -24,25 +21,10 @@
     }
   }
 }
-.uiColorRampComps {
-  display: inline-flex;
-  flex-flow: column;
-  align-items: end;
-  margin:0;
-  padding:0;
-  > li {
-    display: flex;
-    line-height: 0.8em;
-    align-items: center;
-  }
-}
 
-.uiColorRampPreview {
-  width: calc(100% - 2px);
-  height: 100px;
-  position: relative;
-  margin: 0px 2px 3px;
-}
 
+.element {
+  @extend %UiUiColorRamp;
+}
 
 

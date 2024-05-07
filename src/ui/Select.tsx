@@ -1,9 +1,9 @@
 import React from 'react';
-import { Styles } from '../styles';
 import { Config } from '../config';
 
-import selectStyles from './Select.module.scss';
-Styles.register('Select', selectStyles);
+import { Styles } from '../styles';
+import SelectStyles from './Select.module.scss';
+Styles.register('Select', SelectStyles);
 
 type Obj = {
   type?: 'select';
@@ -23,10 +23,8 @@ export function UiUiSelect({ o, onChange }: Config.Args<Obj>) {
     if (onChange) onChange(o);
   }
 
-  const styles = Styles.of('Select');
-
   return (
-    <div className={styles.uiSelect}>
+    <div className={Styles.of('Select.element')}>
       <label htmlFor={o.label}>{o.label}</label>
       <select ref={selectRef} defaultValue={value} onChange={beforeOnChange}>
         {Object.entries(o.settings).map(([key, val]) => (
@@ -38,24 +36,24 @@ export function UiUiSelect({ o, onChange }: Config.Args<Obj>) {
     </div>
   );
 }
+
 type Alt = {
   settings: string[];
   value: string | number;
 };
-Config.register(
-  UiUiSelect,
-  'select',
-  (o: Config.Alt<Obj, Alt>, onChange?: (o: Obj) => void) => {
-    const obj = o as Obj;
-    const s = o.settings;
-    obj.type = 'select';
-    if (Array.isArray(s)) {
-      obj.settings = {};
-      s.forEach((el, i) => {
-        obj.settings[i] = el;
-      });
-    }
-    obj.value = Array.isArray(o.value) ? o.value : [`${o.value}`];
-    return <UiUiSelect key={obj.label} o={obj} onChange={onChange} />;
+
+const builder: Config.Builder<Obj, Alt> = (o, opts) => {
+  const obj = o as Obj;
+  const s = o.settings;
+  obj.type = 'select';
+  if (Array.isArray(s)) {
+    obj.settings = {};
+    s.forEach((el, i) => {
+      obj.settings[i] = el;
+    });
   }
-);
+  obj.value = Array.isArray(o.value) ? o.value : [`${o.value}`];
+  return <UiUiSelect key={obj.label} o={obj} onChange={opts.onChange} />;
+};
+
+Config.register(UiUiSelect, 'select', builder);

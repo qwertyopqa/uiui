@@ -1,18 +1,17 @@
-
-.uiSelect {
-  position:relative;
+%UiUiSelect {
+  position: relative;
   display: inline-flex;
   align-items: center;
   width: 100%;
   min-height: var(--single-line-height-px);
   border-radius: 1px;
   label {
-    font-size: 8px;
-    letter-spacing: -0.04em;
+    font-size: var(--input-label-size);
+    letter-spacing: var(--input-label-kerning);
     z-index: 1;
-    padding: 0px;
+    padding: var(--input-label-padding-vertical) var(--input-label-padding-horizontal);
     pointer-events: none;
-    color:#fff;
+    color:var(--input-label-color);
   }
   select {
     -webkit-appearance: none;
@@ -31,4 +30,8 @@
       border: none !important;
     }
   }
+}
+
+.element {
+  @extend %UiUiSelect;
 }

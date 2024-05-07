@@ -1,0 +1,21 @@
+@import '../node_modules/uiui/src/UiUi';
+@import '../node_modules/uiui/src/ui/Panel.module';
+
+.myTheme {
+  @include UiUiBaseTheme;
+  --u1: 1.5pt;
+  --label-size:  var(--u4);
+  --value-size:  var(--u4);
+  --dock-background: transparent;
+}
+
+.myPanel {
+  .uiPanel {
+    @extend %uiPanel;
+    &[data-root] > div > label {
+      font-weight: 900;
+      margin-bottom: var(--u1);
+    }
+  }
+}
+

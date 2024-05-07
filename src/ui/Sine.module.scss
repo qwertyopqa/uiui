@@ -1,12 +1,14 @@
-
-.uiSine {
-  display: inline-flex;
-  flex-flow: column;
-  align-items: end;
+%UiUiSine {
   position: relative;
+  display: flex;
+  flex-flow: row;
   [role="handle"] {
     width: 10px;
     height: 10px;
     border-color: #fff;
   }
+}
+
+.element {
+  @extend %UiUiSine;
 }

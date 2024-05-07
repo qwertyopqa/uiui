@@ -2,7 +2,7 @@ import React from 'react';
 import { GLSL } from 'glslcv';
 import styles from './glue/styles.module.css';
 import { processGlslCode } from './glue/processor';
-import { RootElem } from '../RootElem';
+import { RootElem } from '../Root';
 
 class FragShaderMiddleware implements GLSL.Shader.Middleware {
   init: boolean = false;

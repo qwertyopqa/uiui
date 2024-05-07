@@ -18,7 +18,7 @@
 
 }
 
-.uiSlider {
+%UiUiSlider {
     position:relative;
     display: inline-flex;
     align-items: center;
@@ -26,18 +26,12 @@
     min-height: var(--single-line-height-px);
     background: rgba(255,255,255,0.6);
     border-radius: 1px;
-    .uiSliderFlexContainer {
-      position: relative;
-      display: flex;
-      width: 100%;
-      padding: 0px 3px;
-    }
     label {
-      color: var(--label-color);
-      font-size: var(--label-size);
-      font-weight: var(--label-weight);
-      letter-spacing: var(--label-kerning);
-      padding: var(--label-padding-vertical) var(--label-padding-horizontal);
+      color: var(--input-label-color);
+      font-size: var(--input-label-size);
+      font-weight: var(--input-label-weight);
+      letter-spacing: var(--input-label-kerning);
+      padding: var(--input-label-padding-vertical) var(--input-label-padding-horizontal);
       pointer-events: none;
     }
     input[type="range"] {
@@ -51,20 +45,27 @@
         @include uiSliderThumb;
       }
     }
-    .uiSliderValue {
-      color: var(--value-color);
-      font-size: var(--value-size);
-      font-weight: var(--value-weight);
-      letter-spacing: var(--value-kerning);
-      padding: var(--value-padding-vertical) var(--value-padding-horizontal);
-      text-align: right;
-      flex-grow: 1;
-      min-width: 15px;
-      margin-left: 5px;
-      pointer-events: none;
-    }
 }
-.uiSliderThumbReplacement {
+%UiUiSlider_Value {
+  color: var(--value-color);
+  font-size: var(--value-size);
+  font-weight: var(--value-weight);
+  letter-spacing: var(--value-kerning);
+  padding: var(--value-padding-vertical) var(--value-padding-horizontal);
+  text-align: right;
+  flex-grow: 1;
+  min-width: 15px;
+  margin-left: 5px;
+  pointer-events: none;
+}
+%UiUiSlider_Container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0px 3px;
+}
+%UiUiSlider_Thumb {
     --width: 0%;
     position: absolute;
     top: 1px;
@@ -75,4 +76,17 @@
     background: rgba(255,255,255,0.8);
     pointer-events: none;
     transition: width 0.05s ease-in-out;
+}
+
+.element {
+  @extend %UiUiSlider;
+}
+.wrapper {
+  @extend %UiUiSlider_Container;
+}
+.thumb {
+  @extend %UiUiSlider_Thumb;
+}
+.value {
+  @extend %UiUiSlider_Value;
 }

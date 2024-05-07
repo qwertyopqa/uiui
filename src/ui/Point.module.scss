@@ -1,21 +1,8 @@
-.wrapper {
-  > label {
-    display: flex;
-    font-size: 7px;
-    margin: 0;
-    text-transform: uppercase;
-    pointer-events: none;
-    color:#fff;
-    > span {
-      display: inline-block;
-      background: #ccc;
-      flex-grow: 1;
-      height: 1px;
-      margin-top: 5px;
-      margin-left: 5px;
-    }
-  }
+%UiUiPoint {
+  display: flex;
+  flex-flow: row;
 }
-.xy {
-  height: 100px;
+
+.element {
+  @extend %UiUiPoint;
 }

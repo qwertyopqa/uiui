@@ -1,17 +1,30 @@
 import React from 'react';
-import { Styles } from '../styles';
 import { Config } from '../config';
 import type * as U from '../utils/numbers';
 
+import { Styles } from '../styles';
 import sliderStyles from './Slider.module.scss';
 Styles.register('Slider', sliderStyles);
 
-type Obj = {
-  type?: 'slider';
-  label: string;
-  settings: U.THREE_NUMBERS;
-  value: [number];
+type Conf<A, B = {}> = {
+  Args: Config.Args<A>;
+  Main: A;
+  Alt: B;
+  Mix: Config.Alt<A, B>;
 };
+
+type C = Conf<
+  {
+    type?: 'slider';
+    label: string;
+    settings: U.THREE_NUMBERS;
+    value: [number];
+  },
+  {
+    settings: { min: number; max: number; step: number };
+    value: number;
+  }
+>;
 
 function pcent(s: U.THREE_NUMBERS, v: number) {
   const a = v - s[0];
@@ -19,7 +32,7 @@ function pcent(s: U.THREE_NUMBERS, v: number) {
   return `${(a / b) * 100}%`;
 }
 
-export function UiUiSlider({ o, onChange }: Config.Args<Obj>) {
+export function UiUiSlider({ o, onChange }: C['Args']) {
   const thumbRef = React.useRef<HTMLDivElement>(null);
   const [value, setValue] = React.useState(o.value[0]);
   const [props, setProps] = React.useState<U.THREE_NUMBERS>([0, 1, 0.01]);
@@ -44,14 +57,12 @@ export function UiUiSlider({ o, onChange }: Config.Args<Obj>) {
     if (onChange) onChange(o);
   }
 
-  const styles = Styles.of('Slider');
-
   return (
-    <div className={styles.uiSlider}>
-      <div ref={thumbRef} className={styles.uiSliderThumbReplacement}></div>
-      <div className={styles.uiSliderFlexContainer}>
+    <div className={Styles.of('Slider.element')}>
+      <div ref={thumbRef} className={Styles.of('Slider.thumb')}></div>
+      <div className={Styles.of('Slider.wrapper')}>
         <label htmlFor={o.label}>{o.label}</label>
-        <div className={styles.uiSliderValue}>{value}</div>
+        <div className={Styles.of('Slider.value')}>{value}</div>
       </div>
       <input
         type="range"
@@ -65,21 +76,14 @@ export function UiUiSlider({ o, onChange }: Config.Args<Obj>) {
     </div>
   );
 }
-type Alt = {
-  settings: { min: number; max: number; step: number };
-  value: number;
-};
-Config.register(
-  UiUiSlider,
-  'slider',
-  (o: Config.Alt<Obj, Alt>, onChange?: (o: Obj) => void) => {
-    const obj = o as Obj;
-    const s = o.settings;
-    obj.type = 'slider';
-    obj.settings = Array.isArray(s)
-      ? (s as U.THREE_NUMBERS)
-      : [s.min, s.max, s.step];
-    obj.value = Array.isArray(o.value) ? o.value : [o.value];
-    return <UiUiSlider key={obj.label} o={obj} onChange={onChange} />;
-  }
-);
+
+Config.register<C['Main'], C['Alt']>(UiUiSlider, 'slider', (o, opts) => {
+  const obj = o as C['Main'];
+  const s = o.settings;
+  obj.type = 'slider';
+  obj.settings = Array.isArray(s)
+    ? (s as U.THREE_NUMBERS)
+    : [s.min, s.max, s.step];
+  obj.value = Array.isArray(o.value) ? o.value : [o.value];
+  return <UiUiSlider key={obj.label} o={obj} onChange={opts.onChange} />;
+});

@@ -89,17 +89,16 @@ export function UiUiKnob({ o, onChange }: Config.Args<Obj>) {
     </div>
   );
 }
-Config.register(
-  UiUiKnob,
-  'knob',
-  (o: Config.Alt<Obj, Alt>, onChange?: (value: Obj) => void) => {
-    const obj = o as Obj;
-    const s = o.settings;
-    obj.type = 'knob';
-    obj.settings = Array.isArray(s)
-      ? (s as THREE_NUMBERS)
-      : [s.min, s.max, s.step];
-    obj.value = Array.isArray(o.value) ? o.value : [o.value];
-    return <UiUiKnob key={obj.label} o={obj} onChange={onChange} />;
-  }
-);
+
+const builder: Config.Builder<Obj, Alt> = (o, opts) => {
+  const obj = o as Obj;
+  const s = o.settings;
+  obj.type = 'knob';
+  obj.settings = Array.isArray(s)
+    ? (s as THREE_NUMBERS)
+    : [s.min, s.max, s.step];
+  obj.value = Array.isArray(o.value) ? o.value : [o.value];
+  return <UiUiKnob key={obj.label} o={obj} onChange={opts.onChange} />;
+};
+
+Config.register(UiUiKnob, 'knob', builder);

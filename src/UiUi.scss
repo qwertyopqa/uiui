@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@mixin UiUiBaseTheme {
+  --u1: 2px;
+  --u2: calc(var(--u1) * 2);
+  --u3: calc(var(--u1) * 3);
+  --u4: calc(var(--u1) * 4);
+  //
+  --dock-padding: var(--u2);
+  --dock-background:transparent;
+  //
+  --single-line-height-px: 9px;
+  //
+  --label-size: 7px;
+  --label-weight: 600;
+  --label-kerning: 0.05em;
+  --label-color: #fff;
+  --label-padding-vertical: 0px;
+  --label-padding-horizontal: 0px;
+  --label-padding: var(--label-padding-vertical) var(--label-padding-horizontal);
+  //
+  --input-label-size: 8px;
+  --input-label-weight: 400;
+  --input-label-kerning: var(--label-kerning);
+  --input-label-color: #000;
+  --input-label-padding-vertical: var(--label-padding-vertical);
+  --input-label-padding-horizontal: var(--label-padding-horizontal);
+  --input-label-padding: var(--label-padding-vertical) var(--label-padding-horizontal);
+  //
+  --value-size: var(--label-size);
+  --value-weight: 600;
+  --value-kerning: 0.1em;
+  --value-color: var(--input-label-color);
+  --value-padding-vertical: var(--u1);
+  --value-padding-horizontal: 0px;
+  //
+  --panel-min-width: 60px;
+  --panel-margin: 0 var(--u2);
+  --panel-background: radial-gradient(
+    circle at 0% 0%,
+    rgba(103, 103, 103, 0.1),
+    rgb(200, 200, 200, 0.3) 60%
+  ),
+   rgba(75, 75, 75, 0.3);
+  --panel-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+  --panel-padding-vertical: var(--u3);
+  --panel-padding-horizontal: var(--u3);
+  --panel-padding: var(--panel-padding-vertical) var(--panel-padding-horizontal);
+  //
+  --elements-margin: var(--u1);
+  font-family: 'DM Sans', sans-serif;
+}
+
+@mixin absolute($t: 0, $l: 0, $r: 0, $b: 0) {
+  position: absolute;
+  top: $t;
+  left: $l;
+  right: $r;
+  bottom: $b;
+}
+@mixin flex($d: row, $j: center, $a: center) {
+  display: flex;
+  width: 100%;
+  flex-flow: $d;
+  justify-content: $j;
+  align-items: $a;
+}

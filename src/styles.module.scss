@@ -1,3 +1,5 @@
-.container {
-  display: flex;
+@import 'UiUi';
+
+.uiUiBaseTheme {
+  @include UiUiBaseTheme;
 }

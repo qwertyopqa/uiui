@@ -1,8 +1,13 @@
 import React from 'react';
 import { Config } from '../config';
-import styles from './Sine.module.scss';
 import { THREE_NUMBERS, TWO_NUMBERS, SIX_NUMBERS } from 'utils/numbers';
 import { XY } from './utils/XY';
+import { UiUiLabel } from './utils/Label';
+import { UiUiGroup } from './Group';
+
+import SineStyles from './Sine.module.scss';
+import { Styles } from '../styles';
+Styles.register('Sine', SineStyles);
 
 const rampShaderCode = `#version 300 es
 precision highp float;
@@ -47,15 +52,19 @@ export function UiUiSine({ o, onChange }: Args) {
   function onHandleUpdate(id: string, v: TWO_NUMBERS) {
     o.value[0] = v[0];
     o.value[1] = v[1];
-    setValues([...o.value]);
+    setValues([...v]);
     if (onChange) onChange(o);
     if (options.callbacks?.refresh) options.callbacks.refresh();
   }
 
   const onUniformsUpdate: XY.Canvas.Callback = (us) => {
     if (!values) return;
+    const v = [
+      ((values[0] - stepCtrls.x.min) / stepCtrls.x.max) * 3.0 + 1.0,
+      values[1],
+    ];
     us.map((u) => {
-      u.value = u.name === 'c' ? values : u.value;
+      u.value = u.name === 'c' ? v : u.value;
       return u;
     });
   };
@@ -69,22 +78,26 @@ export function UiUiSine({ o, onChange }: Args) {
   );
 
   return (
-    <div ref={wrapperRef} className={styles.uiSine}>
-      <XY.Pad background={bckgd}>
-        <XY.Handle
-          value={values}
-          stepCtrls={stepCtrls}
-          onChange={onHandleUpdate}
-          options={{ flipX: true }}
-        />
-      </XY.Pad>
+    <div ref={wrapperRef} className={Styles.of('Sine.element')}>
+      {UiUiLabel.build({ label: o.label, orientation: 'v' })}
+      <UiUiGroup>
+        <XY.Pad background={bckgd}>
+          <XY.Handle
+            value={values}
+            stepCtrls={stepCtrls}
+            onChange={onHandleUpdate}
+            options={{ flipX: true }}
+          />
+        </XY.Pad>
+      </UiUiGroup>
     </div>
   );
 }
 type Alt = {
   settings: SIX_NUMBERS;
 };
-function boot(o: Config.Alt<Obj, Alt>, onChange?: Args['onChange']) {
+
+const builder: Config.Builder<Obj, Alt> = (o, opts) => {
   function enforceSettings(
     s: SIX_NUMBERS | XY.Step.Settings
   ): XY.Step.Settings {
@@ -95,6 +108,7 @@ function boot(o: Config.Alt<Obj, Alt>, onChange?: Args['onChange']) {
     };
   }
   o.settings = enforceSettings(o.settings);
-  return <UiUiSine key={o.label} o={o as Obj} onChange={onChange} />;
-}
-Config.register(UiUiSine, 'sine', boot);
+  return <UiUiSine key={o.label} o={o as Obj} onChange={opts.onChange} />;
+};
+
+Config.register(UiUiSine, 'sine', builder);

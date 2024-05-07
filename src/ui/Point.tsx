@@ -1,10 +1,14 @@
 import React from 'react';
-import styles from './Point.module.scss';
 import { Config } from '../config';
 import { UiUiSlider } from './Slider';
 import { UiUiGroup } from './Group';
+import { UiUiLabel } from './utils/Label';
 import { XY } from './utils/XY';
 import { TWO_NUMBERS, SIX_NUMBERS, THREE_NUMBERS } from 'utils/numbers';
+
+import { Styles } from '../styles';
+import PointStyles from './Point.module.scss';
+Styles.register('Point', PointStyles);
 
 type Obj = {
   type?: 'point';
@@ -12,9 +16,12 @@ type Obj = {
   settings: XY.Step.Settings;
   value: TWO_NUMBERS;
 };
-type Args = Config.Args<Obj>;
 
-export function UiUiPoint({ o, onChange }: Args) {
+type Alt = {
+  settings: SIX_NUMBERS;
+};
+
+export function UiUiPoint({ o, onChange }: Config.Args<Obj>) {
   const [value, setValue] = React.useState(o.value);
   const [properties, setProperties] = React.useState(o.settings);
   const stepCtrls = XY.Step.getCtrlsFromArray(o.settings);
@@ -47,31 +54,27 @@ export function UiUiPoint({ o, onChange }: Args) {
   }
 
   return (
-    <div rel="panel" className={styles.wrapper}>
-      <label>
-        {o.label}
-        <span>&nbsp;</span>
-      </label>
+    <div data-type="panel" className={Styles.of('Point.element')}>
+      {UiUiLabel.build({ label: o.label, orientation: 'v' })}
       <UiUiGroup>
-        <XY.Pad className={styles.xy}>
+        <XY.Pad>
           <XY.Handle
             value={value}
             stepCtrls={stepCtrls}
             onChange={onHandleUpdate}
           />
         </XY.Pad>
-        <UiUiSlider o={elO(0)} onChange={onSliderUpdate} />
-        <UiUiSlider o={elO(1)} onChange={onSliderUpdate} />
+        <UiUiGroup flow="row">
+          <UiUiSlider o={elO(0)} onChange={onSliderUpdate} />
+          <UiUiSlider o={elO(1)} onChange={onSliderUpdate} />
+        </UiUiGroup>
       </UiUiGroup>
       <input type="hidden" name={o.label} value={value.toString()} />
     </div>
   );
 }
 
-type Alt = {
-  settings: SIX_NUMBERS;
-};
-function boot(o: Config.Alt<Obj, Alt>, onChange?: Args['onChange']) {
+const builder: Config.Builder<Obj, Alt> = (o, opts) => {
   function enforceSettings(
     s: SIX_NUMBERS | XY.Step.Settings
   ): XY.Step.Settings {
@@ -82,6 +85,7 @@ function boot(o: Config.Alt<Obj, Alt>, onChange?: Args['onChange']) {
     };
   }
   o.settings = enforceSettings(o.settings);
-  return <UiUiPoint key={o.label} o={o as Obj} onChange={onChange} />;
-}
-Config.register(UiUiPoint, 'point', boot);
+  return <UiUiPoint key={o.label} o={o as Obj} onChange={opts.onChange} />;
+};
+
+Config.register(UiUiPoint, 'point', builder);
