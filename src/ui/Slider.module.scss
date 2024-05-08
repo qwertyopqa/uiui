@@ -19,32 +19,24 @@
 }
 
 %UiUiSlider {
-    position:relative;
-    display: inline-flex;
-    align-items: center;
-    width: 100%;
-    min-height: var(--single-line-height-px);
-    background: rgba(255,255,255,0.6);
-    border-radius: 1px;
-    label {
-      color: var(--input-label-color);
-      font-size: var(--input-label-size);
-      font-weight: var(--input-label-weight);
-      letter-spacing: var(--input-label-kerning);
-      padding: var(--input-label-padding-vertical) var(--input-label-padding-horizontal);
-      pointer-events: none;
+  position:relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--single-line-height-px);
+  background: rgba(255,255,255,0.6);
+  border-radius: 1px;
+  input[type="range"] {
+    @include uiSliderInput;
+    &::-webkit-slider-thumb {
+      @include uiSliderThumb;
+      -webkit-appearance: none;
+      appearance: none;
     }
-    input[type="range"] {
-      @include uiSliderInput;
-      &::-webkit-slider-thumb {
-        @include uiSliderThumb;
-        -webkit-appearance: none;
-        appearance: none;
-      }
-      &::-moz-range-thumb {
-        @include uiSliderThumb;
-      }
+    &::-moz-range-thumb {
+      @include uiSliderThumb;
     }
+  }
 }
 %UiUiSlider_Value {
   color: var(--value-color);
@@ -64,6 +56,14 @@
   align-items: center;
   width: 100%;
   padding: 0px 3px;
+  label {
+    color: var(--input-label-color);
+    font-size: var(--input-label-size);
+    font-weight: var(--input-label-weight);
+    letter-spacing: var(--input-label-kerning);
+    padding: var(--input-label-padding-vertical) var(--input-label-padding-horizontal);
+    pointer-events: none;
+  }
 }
 %UiUiSlider_Thumb {
     --width: 0%;

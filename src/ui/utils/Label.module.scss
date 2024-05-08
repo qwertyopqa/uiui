@@ -5,6 +5,7 @@
   font-weight: var(--label-weight);
   letter-spacing: var(--label-kerning);
   margin: 0;
+
   text-transform: uppercase;
   pointer-events: none;
   color: var(--label-color);
@@ -16,6 +17,7 @@
     margin: 0;
   }
   &[data-orientation="h"] {
+    margin-bottom: calc(var(--elements-margin) * 2);
     > span {
       height: 1px;
       margin-left: var(--u2);
@@ -24,8 +26,9 @@
   &[data-orientation="v"] {
     writing-mode: tb;
     transform: rotate(180deg);
-    padding: var(--label-padding-horizontal) var(--label-padding-vertical);
-    margin: 0 var(--u1) 0px calc(var(--u1) * -1);
+    padding: 0 var(--label-padding-vertical) 0 0;
+    margin-right:  calc(var(--elements-margin) * 2);
+    margin-left: calc(var(--elements-margin)* -1);
     > span {
       width: 1px;
       margin-top: var(--u2);

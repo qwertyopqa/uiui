@@ -66,11 +66,7 @@ export function UiUiColorRamp({ o, onChange }: Config.Args<Obj>) {
   };
 
   return (
-    <div
-      rel="panel"
-      ref={wrapperRef}
-      className={Styles.of('ColorRamp.element')}
-    >
+    <div ref={wrapperRef} className={Styles.of('ColorRamp.element')}>
       {UiUiLabel.build({ label: o.label, orientation: 'v' })}
       <XY.Pad
         background={

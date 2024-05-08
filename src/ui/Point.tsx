@@ -54,7 +54,7 @@ export function UiUiPoint({ o, onChange }: Config.Args<Obj>) {
   }
 
   return (
-    <div data-type="panel" className={Styles.of('Point.element')}>
+    <div className={Styles.of('Point.element')}>
       {UiUiLabel.build({ label: o.label, orientation: 'v' })}
       <UiUiGroup>
         <XY.Pad>
