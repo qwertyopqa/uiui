@@ -1,8 +1,8 @@
 import React from 'react';
 import { GLSL } from 'glslcv';
-import styles from './glue/styles.module.css';
-import { processGlslCode } from './glue/processor';
-import { RootElem } from '../Root';
+import styles from './Canvas.module.css';
+import { processGlslCode } from '../utils/glue/processor';
+import { RootElem } from './Root';
 
 class FragShaderMiddleware implements GLSL.Shader.Middleware {
   init: boolean = false;
@@ -54,7 +54,6 @@ export function UiUiCanvas({ code, url, postProcessData }: Args) {
   React.useEffect(() => {
     if (!mw.init && canvasRef.current && _code) {
       const data = processGlslCode(_code);
-      console.log(data.uiui);
       if (postProcessData) postProcessData(data);
       mw.setData(data);
 

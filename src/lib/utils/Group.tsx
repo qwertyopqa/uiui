@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Styles } from '../styles';
+import { Styles } from '../../styles';
 import GroupStyles from './Group.module.scss';
 Styles.register('Group', GroupStyles);
 

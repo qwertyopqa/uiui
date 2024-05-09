@@ -1,9 +1,9 @@
 import React from 'react';
 import RootStyles from './Root.module.scss';
-import { Theme } from './styles';
-import { UiUiUtilLayer } from 'ui/utils/GlobalLayer';
+import { Theme } from '../styles';
+import { UiUiUtilLayer } from './utils/GlobalLayer';
 
-import { Config } from './config';
+import { Config } from '../config';
 
 type Args = {
   data: Config.Json | Config.ProcessorInfo | null;

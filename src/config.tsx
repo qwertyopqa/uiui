@@ -1,3 +1,4 @@
+import { UiUiLib } from './lib';
 type ConstructorArgs<O> = {
   o: O;
   onChange?: (o: O) => void;
@@ -144,9 +145,17 @@ export namespace Config {
     const ret: JSX.Element[] = [];
     els.map((e: Elem) => {
       const reg = withElemType(e.type);
-      if (reg && reg.enabled) {
-        const build = reg.builder(e, opts);
-        ret.push(build);
+      if (reg) {
+        if (reg.enabled) {
+          ret.push(reg.builder(e, opts));
+        }
+      } else {
+        if (UiUiLib.has(e.type)) {
+          ret.push(UiUiLib.build(e.type, e, opts));
+          console.log('GOTO newLIB:', e.type);
+        } else {
+          console.error(`No builder for ${e.type}`);
+        }
       }
       return e;
     });

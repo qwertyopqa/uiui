@@ -1,4 +1,4 @@
-import base from './styles.module.scss';
+import base from './themes/UiUiBaseTheme.module.scss';
 
 type iStyle = any;
 type styleBook = {
@@ -24,7 +24,7 @@ export namespace Styles {
 }
 //
 const themes: styleBook = {
-  base: base.uiUiBaseTheme,
+  base: base.UiUiBaseTheme,
 };
 export namespace Theme {
   export const of = (name: string): iStyle => {

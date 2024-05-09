@@ -1,6 +1,6 @@
-import { setElemPos, getDragabbleArea } from '../utils/dom';
-import { limit } from '../utils/numbers';
-import { UtilLayer } from '../ui/utils/GlobalLayer';
+import { setElemPos, getDragabbleArea } from './dom';
+import { limit } from './numbers';
+import { UtilLayer } from '../elements/utils/GlobalLayer';
 
 type QuickRectInfo = {
   t: number;

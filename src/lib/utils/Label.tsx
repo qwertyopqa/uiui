@@ -1,5 +1,7 @@
 import React from 'react';
-import styles from './Label.module.scss';
+import LabelStyles from './Label.module.scss';
+import { Styles } from '../../styles';
+Styles.register('Label', LabelStyles);
 
 type UiUiLabelOrientation = 'h' | 'v';
 
@@ -18,7 +20,10 @@ export type UiUiLabelProps =
 
 export function UiUiLabel({ children, orientation }: Args) {
   return (
-    <label className={styles.label} data-orientation={orientation ?? 'h'}>
+    <label
+      className={Styles.of('Label.element')}
+      data-orientation={orientation ?? 'h'}
+    >
       {children}
       <span>&nbsp;</span>
     </label>

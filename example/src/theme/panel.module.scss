@@ -1,4 +1,5 @@
-@import '../../node_modules/uiui/src/ui/Panel.module';
+@import '../../node_modules/uiui/src/lib/Panel.module';
+@import '../../node_modules/uiui/src/lib/utils/Label.module';
 
 .UiUiPanel_Root {
   @extend %UiUiPanel_Root;
@@ -13,3 +14,9 @@
   }
 }
 
+.UiUiLabel {
+  @extend %UiUiLabel;
+  &[data-orientation="h"] {
+    margin-bottom: var(--u3)
+  }
+}

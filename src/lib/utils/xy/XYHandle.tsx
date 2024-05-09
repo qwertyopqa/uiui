@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.scss';
 import { XYStepCtrls } from './types';
 import { getDragabbleArea, setElemPos } from '../../../utils/dom';
-import { DragOnParentDelegate } from '../../../action/delegate';
+import { DragOnParentDelegate } from '../../../utils/delegate';
 import { TWO_NUMBERS } from '../../../utils/numbers';
 
 type DragInfo = {

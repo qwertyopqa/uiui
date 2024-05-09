@@ -1,7 +1,8 @@
 import React from 'react';
 import { Config } from '../config';
+
 import { UiUiLabel } from './utils/Label';
-import { UiUiGroup } from './Group';
+import { UiUiGroup } from './utils/Group';
 
 import { Styles } from '../styles';
 import PanelStyles from './Panel.module.scss';
