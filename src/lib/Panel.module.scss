@@ -1,0 +1,61 @@
+@import "../UiUi";
+
+
+%UiUiPanel_Base {
+  display: inline-flex;
+  align-items: stretch;
+  position: relative;
+  margin:0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  &:has(>label[data-orientation="h"]) {
+    flex-flow: column;
+  }
+  &:has(>label[data-orientation="v"]) {
+    flex-flow: row;
+  }
+}
+
+%UiUiPanel_Root {
+  background: var(--panel-background);
+  box-shadow: var(--panel-shadow);
+  margin: var(--panel-margin);
+  min-width: var(--panel-min-width);
+  padding: var(--panel-padding);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: var(--u2);
+  &:before {
+    @include absolute(1px, 1px, 1px, 1px);
+    content: "";
+    border-radius: var(--u1);
+    border: 0.01em solid rgba(255, 255, 255, 0.4);
+    box-shadow:
+      inset 0 0 20px rgba(99, 66, 33, 0.4),
+      0 0 6px rgba(255, 255, 255, 0.2);
+  }
+  > label {
+    font-weight: 900;
+    margin-bottom: calc(var(--panel-padding-vertical));
+  }
+}
+
+%UiUiPanel_Nested {
+  margin: 0;
+  padding:0;
+
+  > label {
+    padding: 0;
+  }
+}
+
+.Base {
+  @extend %UiUiPanel_Base;
+}
+.Root {
+  @extend %UiUiPanel_Root;
+}
+.Nested {
+  @extend %UiUiPanel_Nested;
+}

@@ -11,21 +11,21 @@ out vec4 fragColor;
 in float test;
 
 /**
- * @uiui:panel Tiles    [ t_number,      t_zoom,     rotation    ]
- * @uiui:panel Main     [ divs,          iterations, zoom, Tiles ]
- * @uiui:panel Color >  [ ramp ]
- * @uiui:panel LFO1     [ lfo1_freq,     lfo1_iter  ]
- * @uiui:panel OSC_A    [ oscA_a_lfo1,   LFO1       ]
- * @uiui:panel LFO2     [ lfo2_freq,     lfo2_iter  ]
- * @uiui:panel OSC_B    [ oscB_a_lfo2,   LFO2       ]
+ * @uiui:Panel Tiles    [ t_number,      t_zoom,     rotation    ]
+ * @uiui:Panel Main     [ divs,          iterations, zoom, Tiles ]
+ * @uiui:Panel Color >  [ ramp ]
+ * @uiui:Panel LFO1     [ lfo1_freq,     lfo1_iter  ]
+ * @uiui:Panel OSC_A    [ oscA_a_lfo1,   LFO1       ]
+ * @uiui:Panel LFO2     [ lfo2_freq,     lfo2_iter  ]
+ * @uiui:Panel OSC_B    [ oscB_a_lfo2,   LFO2       ]
 **/
 
-float t_number = .2;// @uiui:slider Tiles       (.1, 3., .01)
-float t_zoom = 1.;  // @uiui:slider Tiles Zoom  (.5, 3.,  .1)
-float zoom = 1.;    // @uiui:slider Global Zoom (.1, 2., .01)
-int divs = 1;       // @uiui:slider Divisions   ( 1, 16,   1)
-int iterations = 8; // @uiui:slider Iterations  ( 1, 20,   1)
-float rotation = .0;// @uiui:slider Rotation    (-1,  1,  .1)
+float t_number = .2;// @uiui:Slider Tiles       (.1, 3., .01)
+float t_zoom = 1.;  // @uiui:Slider Tiles Zoom  (.5, 3.,  .1)
+float zoom = 1.;    // @uiui:Slider Global Zoom (.1, 2., .01)
+int divs = 1;       // @uiui:Slider Divisions   ( 1, 16,   1)
+int iterations = 8; // @uiui:Slider Iterations  ( 1, 20,   1)
+float rotation = .0;// @uiui:Slider Rotation    (-1,  1,  .1)
 
 struct ColRamp {
     vec3 p;
@@ -34,21 +34,21 @@ struct ColRamp {
 // vv
 float ramp[6] = float[6]( .1, .2, .3, 1., 1., 1.); // @uiui:color_ramp Ramping ()
 
-// @uiui:panel Tiles
+// @uiui:Panel Tiles
 struct Tiles {
-    float a; // @uiui:slider Ammount (0., 1., .1)
-    float z; // @uiui:slider Zoom    (0., 1., .1)
+    float a; // @uiui:Slider Ammount (0., 1., .1)
+    float z; // @uiui:Slider Zoom    (0., 1., .1)
 };
 
 struct Main {
-    int d;      // @uiui:slider Divisions (0., 1., .1)
-    int i;      // @uiui:slider Iterations (0., 1., .1)
-    float r;    // @uiui:slider Rotation (0., 1., .1)
-    Tiles t;    // @uiui:panel Tiling
+    int d;      // @uiui:Slider Divisions (0., 1., .1)
+    int i;      // @uiui:Slider Iterations (0., 1., .1)
+    float r;    // @uiui:Slider Rotation (0., 1., .1)
+    Tiles t;    // @uiui:Panel Tiling
 };
 
 
-// @uiui:panel Settings
+// @uiui:Panel Settings
 Main m = Main(
     4, 8, .0, Tiles(.2, 1.)
 );
@@ -71,11 +71,11 @@ vec3 getRamp(float p) {
     return (cos((p + vec3(ramp[0], ramp[1], ramp[2])) * M_PI2) * .5 + .5 ) * vec3(ramp[3], ramp[4], ramp[5]);
 }
 
-float lfo1_freq = .2;   // @uiui:slider FREQ  ( 0, 1., .01 )
-float lfo1_iter = -.7;  // @uiui:slider DECAY (-2, 2., .01 )
+float lfo1_freq = .2;   // @uiui:Slider FREQ  ( 0, 1., .01 )
+float lfo1_iter = -.7;  // @uiui:Slider DECAY (-2, 2., .01 )
 vec2 oscA_o = vec2(.3,.1);
 vec2 oscA_o_lfo1 = vec2(.2 , .2);
-float oscA_a_lfo1 = .25; // @uiui:slider AMP ( 0, 1., .01 )
+float oscA_a_lfo1 = .25; // @uiui:Slider AMP ( 0, 1., .01 )
 float LFO1(float s) {
     return n_sin(u_time * lfo1_freq * M_PI + s * lfo1_iter);
 }
@@ -87,12 +87,12 @@ void oscA(inout vec2 p, inout float a, float s ) {
     p = vec2(cos(a), sin(a)) * length(p);
 }
 
-float lfo2_freq = .1; // @uiui:slider FREQ  ( 0, 1., .01 )
-float lfo2_iter = .5; // @uiui:slider DECAY (-2, 2., .01 )
+float lfo2_freq = .1; // @uiui:Slider FREQ  ( 0, 1., .01 )
+float lfo2_iter = .5; // @uiui:Slider DECAY (-2, 2., .01 )
 vec2 oscB_o = vec2(.6,.0);
 float oscB_o_iter = 1.2;
 vec2 oscB_o_lfo2 = vec2(.1 , -.5);
-float oscB_a_lfo2 = 1.; // @uiui:slider AMP ( 0, 1., .01 )
+float oscB_a_lfo2 = 1.; // @uiui:Slider AMP ( 0, 1., .01 )
 float LFO2(float s) {
     return n_sin(u_time * lfo2_freq * M_PI + s * lfo2_iter);
 }

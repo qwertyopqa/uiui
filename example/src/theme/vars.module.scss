@@ -1,0 +1,10 @@
+@import '../../node_modules/uiui/src/UiUi';
+
+.vars {
+  @include UiUiBaseTheme;
+  --u1: 1.5pt;
+  --label-size:  var(--u4);
+  --value-size:  var(--u4);
+  --dock-background: transparent;
+}
+

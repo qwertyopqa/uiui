@@ -1,23 +1,17 @@
-type ConstructorArgs<O> = {
-  o: O;
-  onChange?: (o: O) => void;
-};
-type ElemConstructor<O = any> = (a: ConstructorArgs<O>) => JSX.Element;
-type ElemBuilder = (a: any, onChange?: (o: any) => void) => JSX.Element;
+import { UiUiLib } from './lib';
 
-type ElemRegistryEntry<O> = {
-  cfgKey: string;
-  elem: ElemConstructor<O>;
-  builder: ElemBuilder;
-  enabled: boolean;
+type ElemBuilderOpts = {
+  onChange?: (o: any) => void;
+  isRoot?: boolean;
+  [key: string]: any;
 };
-type ElemRegistry = {
-  [key: string]: ElemRegistryEntry<any>;
-};
-
-const registry: ElemRegistry = {};
+type ElemBuilder<CFG extends Object = any> = (
+  a: CFG,
+  opts: ElemBuilderOpts
+) => JSX.Element;
 
 export namespace Config {
+  export type Builder<A, B> = ElemBuilder<Alt<A, B>>;
   export type Obj<T, S, V> = {
     type?: T;
     label: string;
@@ -56,36 +50,7 @@ export namespace Config {
     };
     source: string;
   };
-  export function register<O>(
-    e: ElemConstructor<O>,
-    k: string,
-    b: ElemBuilder
-  ) {
-    registry[e.name] = {
-      cfgKey: k,
-      elem: e,
-      builder: b,
-      enabled: false,
-    };
-    return registry;
-  }
-  export const enable = (e: ElemConstructor | ElemConstructor[]) => {
-    if (!Array.isArray(e)) e = [e];
-    e.map((c) => {
-      registry[c.name].enabled = true;
-      return c;
-    });
-  };
-  const withElemType = (t: string): ElemRegistryEntry<any> => {
-    let name = '';
-    Object.keys(registry).map((key) => {
-      if (registry[key].cfgKey === t) {
-        name = key;
-      }
-      return key;
-    });
-    return registry[name];
-  };
+
   export const process = (data: ProcessorInfo): Json => {
     const tmp: {
       [key: string]: Elem & { cn: string[]; r: boolean };
@@ -127,20 +92,12 @@ export namespace Config {
   };
   export const render = (
     els: Elem | Elem[],
-    onChange?: (o: any) => void
+    opts: ElemBuilderOpts
   ): JSX.Element[] => {
-    if (!Array.isArray(els)) {
-      els = [els];
-    }
-    const ret: JSX.Element[] = [];
-    els.map((e: Elem) => {
-      const reg = withElemType(e.type);
-      if (reg && reg.enabled) {
-        const build = reg.builder(e, onChange);
-        ret.push(build);
-      }
-      return e;
-    });
-    return ret;
+    return (!Array.isArray(els) ? [els] : els)
+      .map((e: Elem) =>
+        UiUiLib.has(e.type) ? UiUiLib.build(e.type, e, opts) : null
+      )
+      .filter((e) => e !== null) as JSX.Element[];
   };
 }

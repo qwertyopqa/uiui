@@ -1,0 +1,8 @@
+%UiUiPoint {
+  display: flex;
+  flex-flow: row;
+}
+
+.element {
+  @extend %UiUiPoint;
+}

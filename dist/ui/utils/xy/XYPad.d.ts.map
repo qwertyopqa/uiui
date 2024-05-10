@@ -1,1 +1,0 @@
-{"version":3,"file":"XYPad.d.ts","sourceRoot":"","sources":["../../../../src/ui/utils/xy/XYPad.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAE1B,OAAO,EAAE,cAAc,EAAE,MAAM,SAAS,CAAC;AACzC,OAAO,EAAE,QAAQ,EAAE,MAAM,wBAAwB,CAAC;AAElD,wBAAgB,mBAAmB,CAAC,CAAC,EAAE,cAAc;;;EAKpD;AAGD,wBAAgB,SAAS,CAAC,EAAE,QAAQ,EAAE,UAA2B,EAAE,EAAE,GAAG,qBAOvE"}

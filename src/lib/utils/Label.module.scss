@@ -1,0 +1,42 @@
+%UiUiLabel {
+  display: flex;
+  align-items: center;
+  font-size: var(--label-size);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-kerning);
+  margin: 0;
+
+  text-transform: uppercase;
+  pointer-events: none;
+  color: var(--label-color);
+  padding: var(--label-padding-vertical) var(--label-padding-horizontal);
+  > span {
+    display: inline-block;
+    background: var(--label-color);
+    flex-grow: 1;
+    margin: 0;
+  }
+  &[data-orientation="h"] {
+    margin-bottom: calc(var(--elements-margin) * 2);
+    > span {
+      height: 1px;
+      margin-left: var(--u2);
+    }
+  }
+  &[data-orientation="v"] {
+    writing-mode: tb;
+    transform: rotate(180deg);
+    padding: 0 var(--label-padding-vertical) 0 0;
+    margin-right:  calc(var(--elements-margin) * 2);
+    margin-left: calc(var(--elements-margin) * -2);
+    > span {
+      width: 1px;
+      margin-top: var(--u2);
+    }
+  }
+
+}
+
+.element {
+  @extend %UiUiLabel;
+}
