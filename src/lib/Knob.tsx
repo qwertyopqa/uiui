@@ -11,10 +11,12 @@ type Obj = {
   settings: THREE_NUMBERS;
   value: [number];
 };
+/*
 type Alt = {
   settings: { min: number; max: number; step: number };
   value: number;
 };
+*/
 
 function normalize(s: THREE_NUMBERS, v: number) {
   return (v - s[0]) / (s[1] - s[0]);
@@ -90,6 +92,7 @@ export function UiUiKnob({ o, onChange }: Config.Args<Obj>) {
   );
 }
 
+/*
 const builder: Config.Builder<Obj, Alt> = (o, opts) => {
   const obj = o as Obj;
   const s = o.settings;
@@ -102,3 +105,4 @@ const builder: Config.Builder<Obj, Alt> = (o, opts) => {
 };
 
 Config.register(UiUiKnob, 'knob', builder);
+*/

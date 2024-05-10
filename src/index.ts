@@ -1,5 +1,5 @@
-import { UiUiLib } from './lib';
+import { UiUi } from './UiUi';
 import { els } from './UiUi.lib';
 export { UiUi } from './UiUi';
 
-UiUiLib.register(els);
+UiUi.Lib.register(els);

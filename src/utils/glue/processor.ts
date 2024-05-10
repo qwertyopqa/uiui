@@ -11,7 +11,7 @@ type ProcData = {
   code: string;
 };
 type UiUiPanelCfg = {
-  type: 'panel';
+  type: 'Panel';
   label: string;
   settings: {
     flow: 'col' | 'row';
@@ -76,13 +76,13 @@ function initData(raw: string): ProcData {
 
 function parsePanelUiUiArgs(args: string): UiUiPanelCfg | undefined {
   const r =
-    /@uiui:panel\s*(?<name>.+?)\s*((?<flow>[V|>])\s*)?(\[\s*(?<children>.*)\s*\])?$/m.exec(
+    /@uiui:Panel\s*(?<name>.+?)\s*((?<flow>[V|>])\s*)?(\[\s*(?<children>.*)\s*\])?$/m.exec(
       args
     );
   if (!r || !r.groups) return;
   const flow = r.groups.flow === '>' ? 'row' : 'col';
   return {
-    type: 'panel',
+    type: 'Panel',
     label: r.groups.name,
     settings: { flow },
     children: r.groups.children
@@ -119,7 +119,7 @@ function getDeclaredPanels(comments: Comment.List) {
   const panels: { [key: string]: UiUiPanelCfg } = {};
   Comment.eachM(comments, (c) => {
     if (/@uiui/.test(c.content)) {
-      const re = /(@uiui:panel.*)\n/g;
+      const re = /(@uiui:Panel.*)\n/g;
       let r;
       while ((r = re.exec(c.content))) {
         const panel = parsePanelUiUiArgs(r[1]);
@@ -133,7 +133,7 @@ function getDeclaredPanels(comments: Comment.List) {
 function processPanels(comments: Comment.List, vars: Var.UiUiList) {
   const panels = getDeclaredPanels(comments);
   Object.keys(vars).forEach((k) => {
-    if (vars[k].type === 'panel') {
+    if (vars[k].type === 'Panel') {
       panels[k] = vars[k] as any as UiUiPanelCfg;
       delete vars[k];
     }
@@ -212,7 +212,7 @@ export function processGlslCode(raw: string) {
   data.vars.forEach((v) => {
     parseVarUiUiArgs(v);
     if (v.uiui) {
-      if (v.uiui.type === 'panel') {
+      if (v.uiui.type === 'Panel') {
         v.uiui.value = [];
         const c: string[] = [];
         if (v.args) {

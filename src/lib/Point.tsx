@@ -1,19 +1,15 @@
 import React from 'react';
-import { UiUiLib } from '../lib';
+import { UiUi } from '../UiUi';
 import { UiUiSlider } from './Slider';
 import { UiUiGroup } from './utils/Group';
 import { UiUiLabel } from './utils/Label';
 import { XY } from './utils/XY';
 import { TWO_NUMBERS, SIX_NUMBERS, THREE_NUMBERS } from 'utils/numbers';
 
-import { Styles } from '../styles';
 import PointStyles from './Point.module.scss';
 
-Styles.register('Point', PointStyles);
-
-type C = UiUiLib.Props<
+export const UiUiPoint = UiUi.Lib.addElement<
   {
-    type?: 'point';
     label: string;
     settings: XY.Step.Settings;
     value: TWO_NUMBERS;
@@ -21,9 +17,8 @@ type C = UiUiLib.Props<
   {
     settings: SIX_NUMBERS;
   }
->;
-
-export const UiUiPoint = UiUiLib.El<C>(
+>(
+  'Point',
   ({ o, onChange }) => {
     const [value, setValue] = React.useState(o.value);
     const [properties, setProperties] = React.useState(o.settings);
@@ -48,7 +43,7 @@ export const UiUiPoint = UiUiLib.El<C>(
 
     function elO(i: number) {
       const label = 'XY'[i];
-      const k = label.toLocaleLowerCase() as keyof C['Main']['settings'];
+      const k = label.toLocaleLowerCase() as keyof typeof properties;
       return {
         label,
         value: [value[i]] as [number],
@@ -57,7 +52,7 @@ export const UiUiPoint = UiUiLib.El<C>(
     }
 
     return (
-      <div className={Styles.of('Point.element')}>
+      <div className={UiUi.Styles.of('Point.element')}>
         {UiUiLabel.build({ label: o.label, orientation: 'v' })}
         <UiUiGroup>
           <XY.Pad>
@@ -77,10 +72,8 @@ export const UiUiPoint = UiUiLib.El<C>(
     );
   },
   {
-    id: 'point',
-    tag: 'Point',
     styles: PointStyles,
-    builder: (Tag, mixedConfig, opts) => {
+    builder: (Tag, mixCfg, o, opts) => {
       function enforceSettings(
         s: SIX_NUMBERS | XY.Step.Settings
       ): XY.Step.Settings {
@@ -90,27 +83,8 @@ export const UiUiPoint = UiUiLib.El<C>(
           y: s.slice(3) as THREE_NUMBERS,
         };
       }
-      const o = mixedConfig as any as C['Main'];
-      o.settings = enforceSettings(o.settings);
+      o.settings = enforceSettings(mixCfg.settings);
       return <Tag key={o.label} o={o} onChange={opts.onChange} />;
     },
   }
 );
-
-/*
-const builder: Config.Builder<Obj, Alt> = (o, opts) => {
-  function enforceSettings(
-    s: SIX_NUMBERS | XY.Step.Settings
-  ): XY.Step.Settings {
-    if (!Array.isArray(s)) return s;
-    return {
-      x: s.slice(0, 3) as THREE_NUMBERS,
-      y: s.slice(3) as THREE_NUMBERS,
-    };
-  }
-  o.settings = enforceSettings(o.settings);
-  return <UiUiPoint key={o.label} o={o as Obj} onChange={opts.onChange} />;
-};
-
-Config.register(UiUiPoint, 'point', builder);
-*/

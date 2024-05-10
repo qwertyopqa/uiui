@@ -1,14 +1,10 @@
 import React from 'react';
-import { UiUiLib } from '../lib';
-import { Config } from '../config';
+import { UiUi } from '../UiUi';
 import { SIX_NUMBERS, THREE_NUMBERS, TWO_NUMBERS } from 'utils/numbers';
-
 import { XY } from './utils/XY';
 import { UiUiLabel } from './utils/Label';
 
-import { Styles } from '../styles';
 import RampStyles from './ColorRamp.module.scss';
-Styles.register('ColorRamp', RampStyles);
 
 const rampShaderCode = `#version 300 es
 precision mediump float;
@@ -24,36 +20,36 @@ void main(){
   fragColor = vec4(c ,1.);
 }`;
 
-type C = UiUiLib.Props<Config.Obj<'color_ramp', [], SIX_NUMBERS>>;
-
-export const UiUiColorRamp = UiUiLib.El<C>(
+export const UiUiColorRamp = UiUi.Lib.addElement<
+  UiUi.Config.Obj<'color_ramp', [], SIX_NUMBERS>
+>(
+  'ColorRamp',
   ({ o, onChange }) => {
     const [values, setValues] = React.useState(o.value);
-
     const dSS = [0, 1, 0.01] as THREE_NUMBERS;
     const stepCtrls = XY.Step.getCtrlsFromArray({
       x: dSS,
       y: dSS,
     });
-
     const options = {
       autoPlay: false,
     } as XY.Canvas.BckgdOptions;
 
-    function getV(id: string): TWO_NUMBERS {
+    const withRGB = (id: string, cb: (a: number, b: number) => any) => {
       const i = 'rgb'.indexOf(id);
-      if (i === -1) return [0, 0];
-      return [values[i], values[i + 3]];
-    }
+      return i === -1 ? null : cb(i, i + 3);
+    };
 
-    function setV(id: string, v: TWO_NUMBERS) {
-      const i = 'rgb'.indexOf(id);
-      if (i === -1) return;
-      values[i] = v[0];
-      values[i + 3] = v[1];
-      o.value = values;
-      setValues(values);
-    }
+    const getV = (id: string): TWO_NUMBERS =>
+      withRGB(id, (a, b) => [values[a], values[b]]) ?? [0, 0];
+
+    const setV = (id: string, v: TWO_NUMBERS) =>
+      withRGB(id, (a, b) => {
+        values[a] = v[0];
+        values[b] = v[1];
+        o.value = values;
+        setValues(values);
+      });
 
     function onUpdate(id: string, vs: TWO_NUMBERS) {
       setV(id, vs);
@@ -62,26 +58,21 @@ export const UiUiColorRamp = UiUiLib.El<C>(
     }
 
     const onUniformsUpdate: XY.Canvas.Callback = (us) => {
-      if (!values) return;
-      us.map((u) => {
-        u.value = u.name === 'c' ? values : u.value;
-        return u;
-      });
+      if (values)
+        us.forEach((u) => (u.value = u.name === 'c' ? values : u.value));
     };
 
-    const getHandleJsx = (id: string) => {
-      return (
-        <XY.Handle
-          options={{ id, label: id.toUpperCase() }}
-          value={getV(id)}
-          stepCtrls={stepCtrls}
-          onChange={onUpdate}
-        />
-      );
-    };
+    const getHandleJsx = (id: string) => (
+      <XY.Handle
+        options={{ id, label: id.toUpperCase() }}
+        value={getV(id)}
+        stepCtrls={stepCtrls}
+        onChange={onUpdate}
+      />
+    );
 
     return (
-      <div className={Styles.of('ColorRamp.element')}>
+      <div className={UiUi.Styles.of('ColorRamp.element')}>
         {UiUiLabel.build({ label: o.label, orientation: 'v' })}
         <XY.Pad
           background={
@@ -100,20 +91,9 @@ export const UiUiColorRamp = UiUiLib.El<C>(
     );
   },
   {
-    id: 'color_ramp',
-    tag: 'ColorRamp',
     styles: RampStyles,
-    builder: (Tag, mixedConfig, opts) => {
-      const o = mixedConfig as any as C['Main'];
-      return <Tag key={o.label} o={o} onChange={opts.onChange} />;
-    },
+    builder: (Tag, mixCfg, o, opts) => (
+      <Tag key={o.label} o={mixCfg} onChange={opts.onChange} />
+    ),
   }
 );
-
-/*
-const builder: Config.Builder<Obj, {}> = (o, opts) => {
-  return <UiUiColorRamp key={o.label} o={o} onChange={opts.onChange} />;
-};
-
-Config.register(UiUiColorRamp, 'color_ramp', builder);
-*/

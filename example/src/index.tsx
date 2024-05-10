@@ -12,9 +12,11 @@ import {
 import theme from './theme/vars.module.scss';
 import panelStyles from './theme/panel.module.scss';
 
+/*
 UiUi.Theme.register('MyTheme', theme.vars);
 UiUi.Styles.register('Panel.Root', panelStyles.UiUiPanel_Root);
 UiUi.Styles.register('Label.element', panelStyles.UiUiLabel);
+*/
 // PROBABLY: UiUi.Lib.RegisterStyle('Panel.Root', panelStyles.UiUiPanel_Root);
 // PROBABLY: UiUi.Lib.RegisterStyle('Panel.Root', panelStyles.UiUiPanel_Root);
 

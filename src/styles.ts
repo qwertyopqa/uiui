@@ -30,7 +30,14 @@ export namespace Theme {
   export const of = (name: string): iStyle => {
     return themes[name];
   };
-  export const register = (name: string, style: iStyle) => {
-    themes[name] = style;
+  export const register = (
+    name: string,
+    styles: { [key: string]: iStyle },
+    extend: string = 'base'
+  ) => {
+    if (themes[extend] === undefined) {
+      throw new Error(`Theme ${extend} does not exist`);
+    }
+    themes[name] = { styles, extend };
   };
 }

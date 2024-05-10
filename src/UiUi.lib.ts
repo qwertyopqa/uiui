@@ -1,4 +1,5 @@
 import { UiUiLib } from './lib';
+import { UiUiPanel } from './lib/Panel';
 import { UiUiSlider } from './lib/Slider';
 import { UiUiSine } from './lib/Sine';
 import { UiUiSelect } from './lib/Select';
@@ -11,4 +12,5 @@ export const els: UiUiLib.JSX[] = [
   UiUiSelect,
   UiUiPoint,
   UiUiColorRamp,
+  UiUiPanel,
 ];

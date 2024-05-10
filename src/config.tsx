@@ -1,9 +1,5 @@
 import { UiUiLib } from './lib';
-type ConstructorArgs<O> = {
-  o: O;
-  onChange?: (o: O) => void;
-};
-type ElemConstructor<O = any> = (a: ConstructorArgs<O>) => JSX.Element;
+
 type ElemBuilderOpts = {
   onChange?: (o: any) => void;
   isRoot?: boolean;
@@ -13,18 +9,6 @@ type ElemBuilder<CFG extends Object = any> = (
   a: CFG,
   opts: ElemBuilderOpts
 ) => JSX.Element;
-
-type ElemRegistryEntry<O> = {
-  cfgKey: string;
-  elem: ElemConstructor<O>;
-  builder: ElemBuilder;
-  enabled: boolean;
-};
-type ElemRegistry = {
-  [key: string]: ElemRegistryEntry<any>;
-};
-
-const registry: ElemRegistry = {};
 
 export namespace Config {
   export type Builder<A, B> = ElemBuilder<Alt<A, B>>;
@@ -66,36 +50,7 @@ export namespace Config {
     };
     source: string;
   };
-  export function register<O, B extends Object = {}>(
-    e: ElemConstructor<O>,
-    k: string,
-    b: ElemBuilder<Alt<O, B>>
-  ) {
-    registry[e.name] = {
-      cfgKey: k,
-      elem: e,
-      builder: b,
-      enabled: false,
-    };
-    return registry;
-  }
-  export const enable = (e: ElemConstructor | ElemConstructor[]) => {
-    if (!Array.isArray(e)) e = [e];
-    e.map((c) => {
-      registry[c.name].enabled = true;
-      return c;
-    });
-  };
-  const withElemType = (t: string): ElemRegistryEntry<any> => {
-    let name = '';
-    Object.keys(registry).map((key) => {
-      if (registry[key].cfgKey === t) {
-        name = key;
-      }
-      return key;
-    });
-    return registry[name];
-  };
+
   export const process = (data: ProcessorInfo): Json => {
     const tmp: {
       [key: string]: Elem & { cn: string[]; r: boolean };
@@ -139,44 +94,10 @@ export namespace Config {
     els: Elem | Elem[],
     opts: ElemBuilderOpts
   ): JSX.Element[] => {
-    if (!Array.isArray(els)) {
-      els = [els];
-    }
-    const ret: JSX.Element[] = [];
-    els.map((e: Elem) => {
-      const reg = withElemType(e.type);
-      if (reg) {
-        if (reg.enabled) {
-          ret.push(reg.builder(e, opts));
-        }
-      } else {
-        if (UiUiLib.has(e.type)) {
-          ret.push(UiUiLib.build(e.type, e, opts));
-          console.log('GOTO newLIB:', e.type);
-        } else {
-          console.error(`No builder for ${e.type}`);
-        }
-      }
-      return e;
-    });
-    return ret;
-  };
-  export const renderPanels = (
-    els: Elem | Elem[],
-    opts: ElemBuilderOpts
-  ): JSX.Element[] => {
-    if (!Array.isArray(els)) {
-      els = [els];
-    }
-    const ret: JSX.Element[] = [];
-    els.map((e: Elem) => {
-      const reg = withElemType(e.type);
-      if (reg && reg.enabled) {
-        const build = reg.builder(e, opts);
-        ret.push(build);
-      }
-      return e;
-    });
-    return ret;
+    return (!Array.isArray(els) ? [els] : els)
+      .map((e: Elem) =>
+        UiUiLib.has(e.type) ? UiUiLib.build(e.type, e, opts) : null
+      )
+      .filter((e) => e !== null) as JSX.Element[];
   };
 }

@@ -18,7 +18,7 @@ class FragShaderMiddleware implements GLSL.Shader.Middleware {
     const keys: any = {};
     function processPanel(panelData: any) {
       panelData.forEach((el: any) => {
-        if (el.type === 'panel') {
+        if (el.type === 'Panel') {
           processPanel(el.value);
         } else {
           keys[el.id] = el;

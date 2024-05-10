@@ -1,7 +1,8 @@
 import { Config as CFG } from './config';
-import { UiUiLib } from './UiUiLib';
+
 import { RootElem } from './elements/Root';
 import { UiUiCanvas } from './elements/Canvas';
+import { UiUiLib } from './lib';
 import type * as TypeUtils from './utils/numbers';
 
 import { Styles as ST, Theme as TH } from './styles';
@@ -9,8 +10,8 @@ import { Styles as ST, Theme as TH } from './styles';
 export namespace UiUi {
   export const Root = RootElem;
   export const Canvas = UiUiCanvas;
-  export const Lib = UiUiLib;
   /* eslint-disable no-unused-vars */
+  export import Lib = UiUiLib;
   export import Config = CFG;
   export import Styles = ST;
   export import Theme = TH;

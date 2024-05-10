@@ -1,14 +1,10 @@
 import React from 'react';
 import type * as U from '../utils/numbers';
-import { UiUiLib } from '../lib';
-import { Styles } from '../styles';
+import { UiUi } from '../UiUi';
 import sliderStyles from './Slider.module.scss';
 
-Styles.register('Slider', sliderStyles);
-
-type C = UiUiLib.Props<
+export const UiUiSlider = UiUi.Lib.addElement<
   {
-    type?: 'slider';
     label: string;
     settings: U.THREE_NUMBERS;
     value: [number];
@@ -17,9 +13,8 @@ type C = UiUiLib.Props<
     settings: { min: number; max: number; step: number };
     value: number;
   }
->;
-
-export const UiUiSlider = UiUiLib.El<C>(
+>(
+  'Slider',
   ({ o, onChange }) => {
     const thumbRef = React.useRef<HTMLDivElement>(null);
     const [value, setValue] = React.useState(o.value[0]);
@@ -46,11 +41,11 @@ export const UiUiSlider = UiUiLib.El<C>(
     }
 
     return (
-      <div className={Styles.of('Slider.element')}>
-        <div ref={thumbRef} className={Styles.of('Slider.thumb')}></div>
-        <div className={Styles.of('Slider.wrapper')}>
+      <div className={UiUi.Styles.of('Slider.element')}>
+        <div ref={thumbRef} className={UiUi.Styles.of('Slider.thumb')}></div>
+        <div className={UiUi.Styles.of('Slider.wrapper')}>
           <label htmlFor={o.label}>{o.label}</label>
-          <div className={Styles.of('Slider.value')}>{value}</div>
+          <div className={UiUi.Styles.of('Slider.value')}>{value}</div>
         </div>
         <input
           type="range"
@@ -65,31 +60,14 @@ export const UiUiSlider = UiUiLib.El<C>(
     );
   },
   {
-    id: 'slider',
-    tag: 'Slider',
     styles: sliderStyles,
-    builder: (Tag, mixedConfig, opts) => {
-      const obj = mixedConfig as any as C['Main'];
-      const s = mixedConfig.settings;
-      obj.settings = Array.isArray(s)
+    builder: (Tag, mixCfg, o, opts) => {
+      const s = mixCfg.settings;
+      o.settings = Array.isArray(s)
         ? (s as U.THREE_NUMBERS)
         : [s.min, s.max, s.step];
-      obj.value = Array.isArray(mixedConfig.value)
-        ? mixedConfig.value
-        : [mixedConfig.value];
-      return <Tag key={obj.label} o={obj} onChange={opts.onChange} />;
+      o.value = Array.isArray(mixCfg.value) ? mixCfg.value : [mixCfg.value];
+      return <Tag key={o.label} o={o} onChange={opts.onChange} />;
     },
   }
 );
-
-/*
-Config.register<C['Main'], C['Alt']>(UiUiSlider, 'slider', (o, opts) => {
-  const obj = o as C['Main'];
-  const s = o.settings;
-  obj.settings = Array.isArray(s)
-    ? (s as U.THREE_NUMBERS)
-    : [s.min, s.max, s.step];
-  obj.value = Array.isArray(o.value) ? o.value : [o.value];
-  return <UiUiSlider key={obj.label} o={obj} onChange={opts.onChange} />;
-});
-*/

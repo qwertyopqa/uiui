@@ -1,21 +1,20 @@
-type ConstructorArgs<PROPS extends UiUiLib.Props<any>> = {
-  o: PROPS['Main'];
-  onChange?: (o: PROPS['Main']) => void;
-};
-type ElemConstructor<PROPS extends UiUiLib.Props<any>> = (
+import { Styles } from './styles';
+type ConstructorArgs<PROPS extends UiUiLib.Props> = PROPS['Args'];
+type ElemConstructor<PROPS extends UiUiLib.Props> = (
   a: ConstructorArgs<PROPS>
 ) => JSX.Element;
 
-type ElemBuilderOpts<PROPS extends UiUiLib.Props<any>> = {
-  onChange?: (o: PROPS['Main']) => void;
+type ElemBuilderOpts = {
+  onChange?: (o: any) => void;
   isRoot?: boolean;
   [key: string]: any;
 };
 
-type ElemBuilder<PROPS extends UiUiLib.Props<any>> = (
+type ElemBuilder<PROPS extends UiUiLib.Props> = (
   Tag: ElemConstructor<PROPS>,
   mixedConfig: PROPS['Mix'],
-  opts: ElemBuilderOpts<PROPS>
+  finalConfig: PROPS['Args']['o'],
+  opts: ElemBuilderOpts
 ) => JSX.Element;
 
 type Mix<A, B> = {
@@ -29,37 +28,56 @@ type ElemRegistry = {
 export const els: ElemRegistry = {};
 
 export namespace UiUiLib {
-  export type Props<A = {}, B = {}> = {
+  export type Props<
+    MAIN extends Object = any,
+    ALT extends Object = any,
+    XARGS extends Object = {}
+  > = {
     Args: {
-      o: A;
-      onChange?: (o: A) => void;
-    };
-    Main: A;
-    Alt: B;
-    Mix: Mix<A, B>;
+      o: MAIN;
+      onChange?: (o: any) => void;
+    } & XARGS;
+    Main: MAIN;
+    Alt: ALT;
+    Mix: Mix<MAIN, ALT>;
   };
 
-  export type JSX<PROPS extends Props<any> = any> = ((
+  export type JSX<PROPS extends Props = Props> = ((
     args: ConstructorArgs<PROPS>
   ) => JSX.Element) & {
     uiui: Info<PROPS>;
   };
 
-  export type Info<PROPS extends Props<any>> = {
+  export type Info<PROPS extends Props> = {
     id: string;
     tag: string;
     styles: any;
     builder: ElemBuilder<PROPS>;
   };
 
-  export function El<PROPS extends Props<any>>(
+  export function El<PROPS extends Props>(
     jsx: (props: PROPS['Args']) => JSX.Element,
     info: Info<PROPS>
   ): UiUiLib.JSX<PROPS> {
     const el = jsx as any as UiUiLib.JSX<PROPS>;
     el.uiui = info;
-    console.log(el);
     return el;
+  }
+
+  export function addElement<
+    MAIN extends Object = {},
+    ALT extends Object = {},
+    XARGS extends Object = {},
+    PROPS extends Props<MAIN, ALT, XARGS> = Props<MAIN, ALT, XARGS>,
+    ID extends string = string,
+    INFO extends Info<PROPS> = Info<PROPS>
+  >(
+    id: ID,
+    jsx: (props: PROPS['Args']) => JSX.Element,
+    info: Omit<INFO, 'id' | 'tag'>
+  ): UiUiLib.JSX<PROPS> {
+    const cInfo = Object.assign(info, { id, tag: id }) as any as INFO;
+    return El<PROPS>(jsx, cInfo);
   }
 
   export function register<PROPS extends Props<any>>(
@@ -68,7 +86,7 @@ export namespace UiUiLib {
     if (!Array.isArray(elOrEls)) return register([elOrEls]);
     elOrEls.forEach((el) => {
       els[el.uiui.id] = el;
-      console.log(`Registered ${el.uiui.id}`);
+      if (el.uiui.styles) Styles.register(el.uiui.tag, el.uiui.styles);
     });
   }
 
@@ -77,9 +95,9 @@ export namespace UiUiLib {
   export const build = <PROPS extends Props<any>>(
     key: string,
     conf: PROPS['Mix'],
-    opts: ElemBuilderOpts<any>
+    opts: ElemBuilderOpts
   ) => {
     const o = els[key];
-    return o.uiui.builder(o, conf, opts);
+    return o.uiui.builder(o, conf, conf, opts);
   };
 }

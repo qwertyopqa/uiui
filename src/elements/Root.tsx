@@ -29,7 +29,7 @@ export function RootElem({
   const pushElems = React.useCallback(
     (cfg: Config.Json, dock: 'T' | 'B') => {
       const opts = { onChange, isRoot: true, outterFlow: 'row' };
-      const els = Config.renderPanels(cfg, opts);
+      const els = Config.render(cfg, opts);
       if (dock === 'T') {
         setTElems([...tElems, ...els]);
       } else {

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 @mixin UiUiBaseTheme {
-  --u1: 2px;
+  --u1: 1.5px;
   --u2: calc(var(--u1) * 2);
   --u3: calc(var(--u1) * 3);
   --u4: calc(var(--u1) * 4);
@@ -10,7 +10,7 @@
   //
   --single-line-height-px: 9px;
   //
-  --label-size: 8px;
+  --label-size: 7px;
   --label-weight: 600;
   --label-kerning: 0.05em;
   --label-color: #fff;
@@ -18,7 +18,7 @@
   --label-padding-horizontal: 0px;
   --label-padding: var(--label-padding-vertical) var(--label-padding-horizontal);
   //
-  --input-label-size: 8px;
+  --input-label-size: 7px;
   --input-label-weight: 400;
   --input-label-kerning: var(--label-kerning);
   --input-label-color: #000;

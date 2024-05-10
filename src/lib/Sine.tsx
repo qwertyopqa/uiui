@@ -1,13 +1,10 @@
 import React from 'react';
-import { UiUiLib } from '../lib';
+import { UiUi } from '../UiUi';
 import { THREE_NUMBERS, TWO_NUMBERS, SIX_NUMBERS } from 'utils/numbers';
 import { XY } from './utils/XY';
 import { UiUiLabel } from './utils/Label';
 import { UiUiGroup } from './utils/Group';
-
 import SineStyles from './Sine.module.scss';
-import { Styles } from '../styles';
-Styles.register('Sine', SineStyles);
 
 const rampShaderCode = `#version 300 es
 precision highp float;
@@ -30,9 +27,8 @@ void main(){
   fragColor = vec4(vec3(d),1.);
 }`;
 
-type C = UiUiLib.Props<
+export const UiUiSine = UiUi.Lib.addElement<
   {
-    type?: 'sine';
     label: string;
     settings: XY.Step.Settings;
     value: TWO_NUMBERS;
@@ -40,9 +36,8 @@ type C = UiUiLib.Props<
   {
     settings: SIX_NUMBERS;
   }
->;
-
-export const UiUiSine = UiUiLib.El<C>(
+>(
+  'Sine',
   ({ o, onChange }) => {
     const wrapperRef = React.useRef<HTMLDivElement>(null);
     const [values, setValues] = React.useState(o.value);
@@ -82,7 +77,7 @@ export const UiUiSine = UiUiLib.El<C>(
     );
 
     return (
-      <div ref={wrapperRef} className={Styles.of('Sine.element')}>
+      <div ref={wrapperRef} className={UiUi.Styles.of('Sine.element')}>
         {UiUiLabel.build({ label: o.label, orientation: 'v' })}
         <UiUiGroup>
           <XY.Pad background={bckgd}>
@@ -98,10 +93,8 @@ export const UiUiSine = UiUiLib.El<C>(
     );
   },
   {
-    id: 'sine',
-    tag: 'Sine',
     styles: SineStyles,
-    builder: (Tag, mixedConfig, opts) => {
+    builder: (Tag, mixCfg, o, opts) => {
       function enforceSettings(
         s: SIX_NUMBERS | XY.Step.Settings
       ): XY.Step.Settings {
@@ -111,27 +104,8 @@ export const UiUiSine = UiUiLib.El<C>(
           y: s.slice(3) as THREE_NUMBERS,
         };
       }
-      const o = mixedConfig as any as C['Main'];
       o.settings = enforceSettings(o.settings);
       return <Tag key={o.label} o={o} onChange={opts.onChange} />;
     },
   }
 );
-
-/*
-const builder: Config.Builder<Obj, Alt> = (o, opts) => {
-  function enforceSettings(
-    s: SIX_NUMBERS | XY.Step.Settings
-  ): XY.Step.Settings {
-    if (!Array.isArray(s)) return s;
-    return {
-      x: s.slice(0, 3) as THREE_NUMBERS,
-      y: s.slice(3) as THREE_NUMBERS,
-    };
-  }
-  o.settings = enforceSettings(o.settings);
-  return <UiUiSine key={o.label} o={o as Obj} onChange={opts.onChange} />;
-};
-
-Config.register(UiUiSine, 'sine', builder);
-*/
