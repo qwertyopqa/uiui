@@ -8,7 +8,7 @@ UiUi aims to provide the most minimalistic + small yet readable Gui.
 It's highly dependent on glslcv a minimalistic implementation of 2D GLSL shader code into a canvas element.
 
 What it does:
-- Creates a GUI based on a config file, and calls back any state update.
+- Creates a GUI based on a config file that calls back any state update. Great for tweaking params and who know what more
 - Parses a GLSL shader file w/ UiUi comments and displays it.
 
 You can check it [Here](https://uiui-examples.vercel.app/)
@@ -17,7 +17,7 @@ You can check it [Here](https://uiui-examples.vercel.app/)
 It should/will support:
 - extendable component (you should be able to define new components)
 - component replacement (you can define a new slider codebase for the component type 'slider')
-- theming
+- theming (altering current css vars or/and the components css modules )
 
 ## Install
 Unfortunatelly this proj is still highly dependent on the [react-typescript-library template](https://github.com/alioguzhan/react-typescript-library). So yarn...
