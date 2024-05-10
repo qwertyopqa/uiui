@@ -20,7 +20,7 @@ jobs:
       - name: build proj
         uses: borales/actions-yarn@v4
         with:
-          cmd: install
+          cmd: build
       - name: Publish package
         run: npm publish
         env:
