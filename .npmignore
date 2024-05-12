@@ -4,7 +4,6 @@
 docs/
 example/
 node_modules/
-src/
 ./.*
 ./CODE_OF_CONDUCT.md
 ./CONTRIBUTING.md
