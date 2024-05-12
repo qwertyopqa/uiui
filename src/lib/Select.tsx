@@ -25,8 +25,10 @@ export const UiUiSelect = UiUi.Lib.addElement<
       if (onChange) onChange(o);
     }
 
+    const styles = UiUi.useTheme().ns('Select');
+
     return (
-      <div className={UiUi.Styles.of('Select.element')}>
+      <div className={styles.element}>
         <label htmlFor={o.label}>{o.label}</label>
         <select ref={selectRef} defaultValue={value} onChange={beforeOnChange}>
           {Object.entries(o.settings).map(([key, val]) => (

@@ -76,8 +76,10 @@ export const UiUiSine = UiUi.Lib.addElement<
       />
     );
 
+    const styles = UiUi.useTheme().ns('Sine');
+
     return (
-      <div ref={wrapperRef} className={UiUi.Styles.of('Sine.element')}>
+      <div ref={wrapperRef} className={styles.element}>
         {UiUiLabel.build({ label: o.label, orientation: 'v' })}
         <UiUiGroup>
           <XY.Pad background={bckgd}>

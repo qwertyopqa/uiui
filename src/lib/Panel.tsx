@@ -25,23 +25,26 @@ export const UiUiPanel = UiUi.Lib.addElement<
       );
     }, [o, onChange]);
 
+    const styles = UiUi.useTheme().ns('Panel');
     const props = () => {
       const p: { [key: string]: string } = {
-        className: UiUi.Styles.of('Panel.Base'),
+        className: '',
         'data-type': 'panel',
         'data-outter-flow': outterFlow ?? 'col',
       };
+      const classNames = [styles.Base];
       if (isRoot) {
         p['data-root'] = 'true';
-        p.className = UiUi.Styles.concat(p.className, 'Panel.Root');
+        classNames.push(styles.Root);
       } else {
-        p.className = UiUi.Styles.concat(p.className, 'Panel.Nested');
+        classNames.push(styles.Nested);
         if (outterFlow === 'col') {
-          p.className = UiUi.Styles.concat(p.className, 'Panel.OnColumn');
+          classNames.push(styles.onColumn);
         } else {
-          p.className = UiUi.Styles.concat(p.className, 'Panel.OnRow');
+          classNames.push(styles.onRow);
         }
       }
+      p.className = classNames.join(' ');
       return p;
     };
 

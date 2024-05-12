@@ -71,8 +71,10 @@ export const UiUiColorRamp = UiUi.Lib.addElement<
       />
     );
 
+    const styles = UiUi.useTheme().ns('ColorRamp');
+
     return (
-      <div className={UiUi.Styles.of('ColorRamp.element')}>
+      <div className={styles.element}>
         {UiUiLabel.build({ label: o.label, orientation: 'v' })}
         <XY.Pad
           background={

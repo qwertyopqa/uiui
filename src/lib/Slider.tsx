@@ -40,12 +40,14 @@ export const UiUiSlider = UiUi.Lib.addElement<
       if (onChange) onChange(o);
     }
 
+    const style = UiUi.useTheme().ns('Slider');
+
     return (
-      <div className={UiUi.Styles.of('Slider.element')}>
-        <div ref={thumbRef} className={UiUi.Styles.of('Slider.thumb')}></div>
-        <div className={UiUi.Styles.of('Slider.wrapper')}>
+      <div className={style.element}>
+        <div ref={thumbRef} className={style.thumb}></div>
+        <div className={style.wrapper}>
           <label htmlFor={o.label}>{o.label}</label>
-          <div className={UiUi.Styles.of('Slider.value')}>{value}</div>
+          <div className={style.value}>{value}</div>
         </div>
         <input
           type="range"

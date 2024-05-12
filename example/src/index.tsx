@@ -9,16 +9,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import theme from './theme/vars.module.scss';
-import panelStyles from './theme/panel.module.scss';
-
-/*
-UiUi.Theme.register('MyTheme', theme.vars);
-UiUi.Styles.register('Panel.Root', panelStyles.UiUiPanel_Root);
-UiUi.Styles.register('Label.element', panelStyles.UiUiLabel);
-*/
-// PROBABLY: UiUi.Lib.RegisterStyle('Panel.Root', panelStyles.UiUiPanel_Root);
-// PROBABLY: UiUi.Lib.RegisterStyle('Panel.Root', panelStyles.UiUiPanel_Root);
+import { initTheme } from './theme/example';
+initTheme();
 
 //import { UiUiPoint } from './ui/Point';
 // import sliderStyles from './ui/slider.module.scss';
@@ -31,15 +23,15 @@ const testData = require('./UiUi.testdata.b.json');
 const router = createBrowserRouter([
   {
     path: "/from-file",
-    element: <UiUi.Root data={testData} />,//theme="MyTheme"/>,
+    element: <UiUi.Root data={testData} theme='example'/>,
   },
   {
     path: "/glsl/tiles",
-    element: <UiUi.Canvas url="/shader.frag.glsl" />,
+    element: <UiUi.Canvas url="/shader.frag.glsl" theme='example'/>,
   },
   {
     path: "/glsl/threads",
-    element: <UiUi.Canvas url="/threads.frag.glsl" />,
+    element: <UiUi.Canvas url="/threads.frag.glsl"/>,
   },
 ]);
 

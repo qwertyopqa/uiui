@@ -33,9 +33,12 @@ class FragShaderMiddleware implements GLSL.Shader.Middleware {
 type CodeOrUrl =
   | { code: string; url?: undefined }
   | { url: string; code?: undefined };
-type Args = CodeOrUrl & { postProcessData?: (data: any) => void };
+type Args = CodeOrUrl & {
+  postProcessData?: (data: any) => void;
+  theme?: string;
+};
 
-export function UiUiCanvas({ code, url, postProcessData }: Args) {
+export function UiUiCanvas({ code, url, postProcessData, theme }: Args) {
   const [_code, setCode] = React.useState(code);
   const [_url] = React.useState(url);
   const [uiuiJSX, setUiuiJSX] = React.useState<React.JSX.Element | null>(null);
@@ -57,14 +60,14 @@ export function UiUiCanvas({ code, url, postProcessData }: Args) {
       if (postProcessData) postProcessData(data);
       mw.setData(data);
 
-      setUiuiJSX(RootElem.withData(data.uiui));
+      setUiuiJSX(<RootElem data={data.uiui} theme={theme} />);
       GLSL.init2D(canvasRef.current)
         .addFragmentShaderMiddleware(mw)
         .setShaderSource('fragment', data.code)
         .play();
       mw.init = true;
     }
-  }, [canvasRef, _code, mw, postProcessData]);
+  }, [canvasRef, _code, mw, postProcessData, theme]);
   return (
     <div className={styles.container}>
       <canvas ref={canvasRef} className={styles.glsl_canvas}></canvas>

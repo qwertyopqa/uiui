@@ -1,27 +1,35 @@
 @import '../UiUi';
 
+%wrapper {
+  @include absolute;
+}
+%docks {
+  @include absolute;
+  @include flex(column, space-between);
+}
 %dock {
   position: relative;
   padding: var(--dock-padding);
   background: var(--dock-background);
 }
-
-.uiUiRoot {
-  @include UiUiBaseTheme;
-  @include absolute;
-  .docks {
-    @include absolute;
-    @include flex(column, space-between);
-  }
-  .topDock {
-    @extend %dock;
-    @include flex(row, start, start);
-  }
-  .bottomDock {
-    @extend %dock;
-    @include flex(row, start, end);
-  }
+%topDock {
+  @extend %dock;
+  @include flex(row, start, start);
+}
+%bottomDock {
+  @extend %dock;
+  @include flex(row, start, end);
 }
 
-
-
+.wrapper {
+  @extend %wrapper;
+}
+.docks {
+  @extend %docks;
+}
+.topDock {
+  @extend %topDock;
+}
+.bottomDock {
+  @extend %bottomDock;
+}

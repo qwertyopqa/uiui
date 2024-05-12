@@ -1,9 +1,11 @@
 import React from 'react';
-import RootStyles from './Root.module.scss';
-import { Theme } from '../styles';
+import { Theme, Styles } from '../styles';
+import { ThemeProvider } from '../themes/ThemeContext';
 import { UiUiUtilLayer } from './utils/GlobalLayer';
-
 import { Config } from '../config';
+
+import RootStyles from './Root.module.scss';
+Styles.register('Root', RootStyles);
 
 type Args = {
   data: Config.Json | Config.ProcessorInfo | null;
@@ -22,13 +24,20 @@ export function RootElem({
   const [tElems, setTElems] = React.useState<JSX.Element[]>([]);
   const [bElems, setBElems] = React.useState<JSX.Element[]>([]);
 
+  const rootTheme = Theme.withName(theme);
+
   function onChange(o: any) {
     console.log(o);
   }
 
   const pushElems = React.useCallback(
     (cfg: Config.Json, dock: 'T' | 'B') => {
-      const opts = { onChange, isRoot: true, outterFlow: 'row' };
+      const opts = {
+        onChange,
+        isRoot: true,
+        outterFlow: 'row',
+        theme: rootTheme,
+      };
       const els = Config.render(cfg, opts);
       if (dock === 'T') {
         setTElems([...tElems, ...els]);
@@ -55,20 +64,24 @@ export function RootElem({
     }
   }, [data, bottom, top, defaultDock]);
 
-  const getThemeClassName = (key: string) => Theme.of(key) ?? Theme.of('base');
+  const getThemeClasses = () => rootTheme.getVars().join(' ');
 
   return (
-    <div className={`${RootStyles.uiUiRoot} ${getThemeClassName(theme)}`}>
-      <UiUiUtilLayer></UiUiUtilLayer>
-      <div className={RootStyles.docks}>
-        <div rel="dock" className={RootStyles.topDock}>
-          {tElems}
-        </div>
-        <div rel="dock" className={RootStyles.bottomDock}>
-          {bElems}
+    <ThemeProvider themeId={theme}>
+      <div
+        className={`${rootTheme.getStyle('Root.wrapper')} ${getThemeClasses()}`}
+      >
+        <UiUiUtilLayer></UiUiUtilLayer>
+        <div className={rootTheme.getStyle('Root.docks')}>
+          <div rel="dock" className={rootTheme.getStyle('Root.topDock')}>
+            {tElems}
+          </div>
+          <div rel="dock" className={rootTheme.getStyle('Root.bottomDock')}>
+            {bElems}
+          </div>
         </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 

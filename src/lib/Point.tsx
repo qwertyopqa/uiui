@@ -51,8 +51,10 @@ export const UiUiPoint = UiUi.Lib.addElement<
       };
     }
 
+    const styles = UiUi.useTheme().ns('Point');
+
     return (
-      <div className={UiUi.Styles.of('Point.element')}>
+      <div className={styles.element}>
         {UiUiLabel.build({ label: o.label, orientation: 'v' })}
         <UiUiGroup>
           <XY.Pad>
