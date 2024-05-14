@@ -6,6 +6,7 @@ const postcss = require('rollup-plugin-postcss');
 const sourceMaps = require('rollup-plugin-sourcemaps');
 const { terser } = require('rollup-plugin-terser');
 const typescript = require('rollup-plugin-typescript2');
+const copy = require('rollup-plugin-copy');
 const pkg = require('./package.json');
 
 module.exports = {
@@ -57,5 +58,8 @@ module.exports = {
     commonjs(),
     // Resolve source maps to the original source
     sourceMaps(),
+    copy({
+      targets: [{ src: 'src/**/*.module.scss', dest: 'dist/scss' }],
+    }),
   ],
 };

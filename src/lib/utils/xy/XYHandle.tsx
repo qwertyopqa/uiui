@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './styles.module.scss';
+import XYStyles from './XY.module.scss';
 import { XYStepCtrls } from './types';
 import { getDragabbleArea, setElemPos } from '../../../utils/dom';
 import { DragOnParentDelegate } from '../../../utils/delegate';
@@ -84,7 +84,7 @@ export function UiUiXYHandle({ value, stepCtrls, onChange, options }: Args) {
   return (
     <div
       ref={xyHandleRef}
-      className={styles.handle}
+      className={XYStyles.handle}
       data-key={opts.id}
       role="handle"
     >
