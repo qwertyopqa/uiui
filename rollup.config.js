@@ -59,7 +59,7 @@ module.exports = {
     // Resolve source maps to the original source
     sourceMaps(),
     copy({
-      targets: [{ src: 'src/**/*.module.scss', dest: 'dist/scss' }],
+      targets: [{ src: 'src/**/*.scss', dest: 'dist/scss' }],
     }),
   ],
 };
