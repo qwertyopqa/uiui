@@ -59,7 +59,18 @@ module.exports = {
     // Resolve source maps to the original source
     sourceMaps(),
     copy({
-      targets: [{ src: 'src/**/*.scss', dest: 'dist/scss' }],
+      targets: [
+        {
+          src: 'src/**/*.scss',
+          dest: 'dist/scss',
+          transform: (contents, filename) => {
+            return contents
+              .toString()
+              .replace('../UiUi', './UiUi')
+              .replace('./themes/UiUi', './UiUi');
+          },
+        },
+      ],
     }),
   ],
 };
