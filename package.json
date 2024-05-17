@@ -1,6 +1,6 @@
 {
   "name": "@opqa/uiui",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "keywords": [],
   "description": "",
   "main": "dist/index.min.js",
@@ -72,8 +72,8 @@
     "node-sass": "^9.0.0",
     "postcss": "^8.4.31",
     "prettier": "^2.8.8",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": ">=18",
+    "react-dom": ">=18",
     "rollup": "^3.23.0",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
@@ -90,5 +90,8 @@
       "./node_modules/.bin/prettier --write",
       "./node_modules/.bin/eslint"
     ]
+  },
+  "dependencies": {
+    "eslint-plugin-react-compiler": "^0.0.0-experimental-53bb89e-20240515"
   }
 }

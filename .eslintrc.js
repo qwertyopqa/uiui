@@ -15,7 +15,13 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier', 'react-hooks'],
+  plugins: [
+    'eslint-plugin-react-compiler',
+    'react',
+    '@typescript-eslint',
+    'prettier',
+    'react-hooks',
+  ],
   extends: [
     'plugin:react/recommended',
     'standard',
@@ -28,6 +34,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
+    'react-compiler/react-compiler': 'error',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'react/react-in-jsx-scope': 'off', // suppress errors for missing 'import React' in files

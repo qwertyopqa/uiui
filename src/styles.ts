@@ -73,7 +73,9 @@ export class Theme implements iTheme {
   }
 
   getVars(): string[] {
-    return [...Object.keys(vars).map((key) => vars[key]), this._vars];
+    return Object.keys(this._vars).length
+      ? [this._vars]
+      : [...Object.keys(vars).map((key) => vars[key])];
   }
 
   ns(ns: string): nsDict {
