@@ -80,7 +80,7 @@
       "value": [0.5,0.3]
     },{
       "label": "Knob A",
-      "type": "Knob",
+      "type": "knob",
       "settings": {
           "min":0,
           "max":1,

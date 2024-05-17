@@ -1,4 +1,4 @@
-import { UiUi } from 'UiUi';
+import { UiUi } from '@opqa/uiui';
 import varsFile from './vars.module.scss';
 import Panel from './panel.module.scss';
 import Root from './root.module.scss';

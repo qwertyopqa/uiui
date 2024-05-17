@@ -1,4 +1,4 @@
-@import '../../node_modules/uiui/src/elements/Root.module.scss';
+@import '../../node_modules/@opqa/uiui/dist/scss/Root.module.scss';
 .bottomDock {
   @extend %bottomDock;
   background: linear-gradient(20deg, rgba(210, 200, 200, 0.2), rgba(255, 235, 215, 0.1) 50%);
