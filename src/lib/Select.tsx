@@ -3,8 +3,8 @@ import { UiUi } from '../UiUi';
 import SelectStyles from './Select.module.scss';
 
 export const UiUiSelect = UiUi.Element<
-  UiUi.T.SETnVAL<UiUi.T.KVP<string>, UiUi.T.S1>,
-  UiUi.T.SETnVAL<UiUi.T.S1, string | number>
+  UiUi.ElSettings<UiUi.T.KVP<string>, UiUi.T.S1>,
+  UiUi.ElValue<UiUi.T.S1, string | number>
 >(
   'Select',
   ({ o, onChange }) => {

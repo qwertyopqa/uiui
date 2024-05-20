@@ -31,6 +31,8 @@ export namespace UiUi {
   }
   /* eslint-enable */
   export import Element = Lib.Element.build;
+  export import ElSettings = Lib.Element.Settings;
+  export import ElValue = Lib.Element.Value;
   export import ElementBaseConfig = Lib.Element.Base;
   //
   export import renderConfig = Config.render;

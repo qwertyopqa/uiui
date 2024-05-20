@@ -3,8 +3,8 @@ import { UiUi } from '../UiUi';
 import sliderStyles from './Slider.module.scss';
 
 export const UiUiSlider = UiUi.Element<
-  UiUi.T.SETnVAL<UiUi.T.N3, UiUi.T.N1>,
-  UiUi.T.SETnVAL<{ min: number; max: number; step: number }, number>
+  UiUi.ElSettings<UiUi.T.N3, { min: number; max: number; step: number }>,
+  UiUi.ElValue<UiUi.T.N1, number>
 >(
   'Slider',
   ({ o, onChange }) => {

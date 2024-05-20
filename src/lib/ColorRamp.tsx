@@ -16,7 +16,10 @@ void main(){
   fragColor = vec4(c ,1.);
 }`;
 
-export const UiUiColorRamp = UiUi.Element<UiUi.T.SETnVAL<[], UiUi.T.N2>>(
+export const UiUiColorRamp = UiUi.Element<
+  UiUi.ElSettings<[]>,
+  UiUi.ElValue<UiUi.T.N2>
+>(
   'ColorRamp',
   ({ o, onChange }) => {
     const [values, setValues] = React.useState(o.value);

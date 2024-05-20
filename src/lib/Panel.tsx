@@ -5,8 +5,8 @@ import PanelStyles from './Panel.module.scss';
 type Flows = 'row' | 'col';
 
 export const UiUiPanel = UiUi.Element<
-  UiUi.T.SETnVAL<{ flow: Flows }, UiUi.Lib.Element.Config[]>,
-  UiUi.T.justSET<undefined | { flow: undefined }>,
+  UiUi.ElSettings<{ flow: Flows }, undefined | { flow: undefined }>,
+  UiUi.ElValue<UiUi.Lib.Element.Config[]>,
   { isRoot?: boolean; outterFlow?: Flows }
 >(
   'Panel',

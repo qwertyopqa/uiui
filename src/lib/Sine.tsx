@@ -24,8 +24,8 @@ void main(){
 }`;
 
 export const UiUiSine = UiUi.Element<
-  UiUi.T.SETnVAL<UiUi.XY.Step.Settings, UiUi.T.N2>,
-  UiUi.T.justSET<UiUi.T.N6>
+  UiUi.ElSettings<UiUi.XY.Step.Settings, UiUi.T.N6>,
+  UiUi.ElValue<UiUi.T.N2>
 >(
   'Sine',
   ({ o, onChange }) => {

@@ -1,14 +1,17 @@
-import { T } from 'utils/t';
 type Mix<A, B> = {
   [K in keyof A]: K extends keyof B ? A[K] | B[K] : A[K];
 };
 
 export namespace Element {
-  export type Base<ID, SETnVAL extends T.SETnVAL> = {
+  export type Base<ID, SETTINGS extends Settings, VALUE extends Value> = {
     type?: ID;
     label: string;
-    settings: SETnVAL['settings'];
-    value: SETnVAL['value'];
+    settings: SETTINGS['main'];
+    value: VALUE['main'];
+  };
+  export type Alt<SETTINGS extends Settings, VALUE extends Value> = {
+    settings: SETTINGS['alt'];
+    value: VALUE['alt'];
   };
 
   export type Config = {
@@ -64,12 +67,22 @@ export namespace Element {
     opts: BuilderOpts
   ) => JSX.Element;
 
+  export type Settings<MAIN extends any = any, ALT extends any = any> = {
+    main: MAIN;
+    alt: ALT;
+  };
+  export type Value<MAIN extends any = any, ALT extends any = any> = {
+    main: MAIN;
+    alt: ALT;
+  };
+
   export function build<
-    SETnVAL extends T.SETnVAL,
-    ALT extends Object = {},
+    SETTINGS extends Settings,
+    VALUE extends Value,
     XARGS extends Object = {},
     ID extends string = string,
-    MAIN extends Base<ID, SETnVAL> = Base<ID, SETnVAL>,
+    MAIN extends Base<ID, SETTINGS, VALUE> = Base<ID, SETTINGS, VALUE>,
+    ALT extends Alt<SETTINGS, VALUE> = Alt<SETTINGS, VALUE>,
     PROPS extends Props<MAIN, ALT, XARGS> = Props<MAIN, ALT, XARGS>,
     INFO extends Info<PROPS> = Info<PROPS>,
   >(
