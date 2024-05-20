@@ -1,8 +1,8 @@
 import React from 'react';
-import { Theme, Styles } from '../styles';
+import { Theme, Styles } from '../Styles';
 import { ThemeProvider } from '../themes/ThemeContext';
 import { UiUiUtilLayer } from './utils/GlobalLayer';
-import { Config } from '../config';
+import { Config } from '../Config';
 
 import RootStyles from './Root.module.scss';
 Styles.register('Root', RootStyles);

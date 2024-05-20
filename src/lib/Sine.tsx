@@ -1,12 +1,8 @@
 import React from 'react';
 import { UiUi } from '../UiUi';
-import { THREE_NUMBERS, TWO_NUMBERS, SIX_NUMBERS } from 'utils/numbers';
-import { XY } from './utils/XY';
-import { UiUiLabel } from './utils/Label';
-import { UiUiGroup } from './utils/Group';
 import SineStyles from './Sine.module.scss';
 
-const rampShaderCode = `#version 300 es
+const fragShaderCode = `#version 300 es
 precision highp float;
 float MPI2 = 6.2831853;
 out vec4 fragColor;
@@ -27,28 +23,22 @@ void main(){
   fragColor = vec4(vec3(d),1.);
 }`;
 
-export const UiUiSine = UiUi.Lib.addElement<
-  {
-    label: string;
-    settings: XY.Step.Settings;
-    value: TWO_NUMBERS;
-  },
-  {
-    settings: SIX_NUMBERS;
-  }
+export const UiUiSine = UiUi.Element<
+  UiUi.T.SETnVAL<UiUi.XY.Step.Settings, UiUi.T.N2>,
+  UiUi.T.justSET<UiUi.T.N6>
 >(
   'Sine',
   ({ o, onChange }) => {
     const wrapperRef = React.useRef<HTMLDivElement>(null);
     const [values, setValues] = React.useState(o.value);
 
-    const stepCtrls = XY.Step.getCtrlsFromArray(o.settings);
+    const stepCtrls = UiUi.XY.Step.getCtrlsFromArray(o.settings);
 
     const options = {
       autoPlay: false,
-    } as XY.Canvas.BckgdOptions;
+    } as UiUi.XY.Canvas.BckgdOptions;
 
-    function onHandleUpdate(id: string, v: TWO_NUMBERS) {
+    function onHandleUpdate(id: string, v: UiUi.T.N2) {
       o.value[0] = v[0];
       o.value[1] = v[1];
       setValues([...v]);
@@ -56,7 +46,7 @@ export const UiUiSine = UiUi.Lib.addElement<
       if (options.callbacks?.refresh) options.callbacks.refresh();
     }
 
-    const onUniformsUpdate: XY.Canvas.Callback = (us) => {
+    const onUniformsUpdate: UiUi.XY.Canvas.Callback = (us) => {
       if (!values) return;
       const v = [
         ((values[0] - stepCtrls.x.min) / stepCtrls.x.max) * 3.0 + 1.0,
@@ -68,29 +58,26 @@ export const UiUiSine = UiUi.Lib.addElement<
       });
     };
 
-    const bckgd = (
-      <XY.Canvas.Bckgd
-        fragShaderCode={rampShaderCode}
-        onUniformsUpdate={onUniformsUpdate}
-        options={options}
-      />
-    );
-
     const styles = UiUi.useTheme().ns('Sine');
+
+    const gHP = () => ({
+      stepCtrls,
+      value: values,
+      onChange: onHandleUpdate,
+      options: { flipX: true },
+    });
 
     return (
       <div ref={wrapperRef} className={styles.element}>
-        {UiUiLabel.build({ label: o.label, orientation: 'v' })}
-        <UiUiGroup>
-          <XY.Pad background={bckgd}>
-            <XY.Handle
-              value={values}
-              stepCtrls={stepCtrls}
-              onChange={onHandleUpdate}
-              options={{ flipX: true }}
+        {UiUi.El.Label.build({ label: o.label, orientation: 'v' })}
+        <UiUi.El.Group>
+          <UiUi.El.XY>
+            <UiUi.El.XYCanvas
+              {...{ fragShaderCode, onUniformsUpdate, options }}
             />
-          </XY.Pad>
-        </UiUiGroup>
+            <UiUi.El.XYHandle {...gHP()} />
+          </UiUi.El.XY>
+        </UiUi.El.Group>
       </div>
     );
   },
@@ -98,12 +85,12 @@ export const UiUiSine = UiUi.Lib.addElement<
     styles: SineStyles,
     builder: (Tag, mixCfg, o, opts) => {
       function enforceSettings(
-        s: SIX_NUMBERS | XY.Step.Settings
-      ): XY.Step.Settings {
+        s: UiUi.T.N6 | UiUi.XY.Step.Settings
+      ): UiUi.XY.Step.Settings {
         if (!Array.isArray(s)) return s;
         return {
-          x: s.slice(0, 3) as THREE_NUMBERS,
-          y: s.slice(3) as THREE_NUMBERS,
+          x: s.slice(0, 3) as UiUi.T.N3,
+          y: s.slice(3) as UiUi.T.N3,
         };
       }
       o.settings = enforceSettings(o.settings);

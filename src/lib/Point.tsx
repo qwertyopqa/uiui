@@ -1,28 +1,17 @@
 import React from 'react';
 import { UiUi } from '../UiUi';
 import { UiUiSlider } from './Slider';
-import { UiUiGroup } from './utils/Group';
-import { UiUiLabel } from './utils/Label';
-import { XY } from './utils/XY';
-import { TWO_NUMBERS, SIX_NUMBERS, THREE_NUMBERS } from 'utils/numbers';
-
 import PointStyles from './Point.module.scss';
 
-export const UiUiPoint = UiUi.Lib.addElement<
-  {
-    label: string;
-    settings: XY.Step.Settings;
-    value: TWO_NUMBERS;
-  },
-  {
-    settings: SIX_NUMBERS;
-  }
+export const UiUiPoint = UiUi.Element<
+  UiUi.T.SETnVAL<UiUi.XY.Step.Settings, UiUi.T.N2>,
+  UiUi.T.justSET<UiUi.T.N6>
 >(
   'Point',
   ({ o, onChange }) => {
     const [value, setValue] = React.useState(o.value);
     const [properties, setProperties] = React.useState(o.settings);
-    const stepCtrls = XY.Step.getCtrlsFromArray(o.settings);
+    const stepCtrls = UiUi.XY.Step.getCtrlsFromArray(o.settings);
 
     React.useEffect(() => {
       setValue(o.value);
@@ -34,7 +23,8 @@ export const UiUiPoint = UiUi.Lib.addElement<
       setValue([...o.value]);
       if (onChange) onChange(o);
     }
-    function onHandleUpdate(k: string, v: TWO_NUMBERS) {
+
+    function onHandleUpdate(k: string, v: UiUi.T.N2) {
       o.value[0] = v[0];
       o.value[1] = v[1];
       setValue([...o.value]);
@@ -51,24 +41,31 @@ export const UiUiPoint = UiUi.Lib.addElement<
       };
     }
 
+    const gHP = () => ({
+      value,
+      stepCtrls,
+      onChange: onHandleUpdate,
+    });
+
+    const gsP = (id: number) => ({
+      o: elO(id),
+      onChange: onSliderUpdate,
+    });
+
     const styles = UiUi.useTheme().ns('Point');
 
     return (
       <div className={styles.element}>
-        {UiUiLabel.build({ label: o.label, orientation: 'v' })}
-        <UiUiGroup>
-          <XY.Pad>
-            <XY.Handle
-              value={value}
-              stepCtrls={stepCtrls}
-              onChange={onHandleUpdate}
-            />
-          </XY.Pad>
-          <UiUiGroup flow="row">
-            <UiUiSlider o={elO(0)} onChange={onSliderUpdate} />
-            <UiUiSlider o={elO(1)} onChange={onSliderUpdate} />
-          </UiUiGroup>
-        </UiUiGroup>
+        {UiUi.El.Label.build({ label: o.label, orientation: 'v' })}
+        <UiUi.El.Group>
+          <UiUi.El.XY>
+            <UiUi.El.XYHandle {...gHP()} />
+          </UiUi.El.XY>
+          <UiUi.El.Group flow="row">
+            <UiUiSlider {...gsP(0)} />
+            <UiUiSlider {...gsP(1)} />
+          </UiUi.El.Group>
+        </UiUi.El.Group>
         <input type="hidden" name={o.label} value={value.toString()} />
       </div>
     );
@@ -77,12 +74,12 @@ export const UiUiPoint = UiUi.Lib.addElement<
     styles: PointStyles,
     builder: (Tag, mixCfg, o, opts) => {
       function enforceSettings(
-        s: SIX_NUMBERS | XY.Step.Settings
-      ): XY.Step.Settings {
+        s: UiUi.T.N6 | UiUi.XY.Step.Settings
+      ): UiUi.XY.Step.Settings {
         if (!Array.isArray(s)) return s;
         return {
-          x: s.slice(0, 3) as THREE_NUMBERS,
-          y: s.slice(3) as THREE_NUMBERS,
+          x: s.slice(0, 3) as UiUi.T.N3,
+          y: s.slice(3) as UiUi.T.N3,
         };
       }
       o.settings = enforceSettings(mixCfg.settings);

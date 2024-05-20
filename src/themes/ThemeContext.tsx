@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { Theme } from '../styles';
+import { Theme } from '../Styles';
 
 export const ThemeContext = createContext<Theme.i>(Theme.withName('base'));
 

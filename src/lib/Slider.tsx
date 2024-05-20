@@ -1,29 +1,21 @@
 import React from 'react';
-import type * as U from '../utils/numbers';
 import { UiUi } from '../UiUi';
 import sliderStyles from './Slider.module.scss';
 
-export const UiUiSlider = UiUi.Lib.addElement<
-  {
-    label: string;
-    settings: U.THREE_NUMBERS;
-    value: [number];
-  },
-  {
-    settings: { min: number; max: number; step: number };
-    value: number;
-  }
+export const UiUiSlider = UiUi.Element<
+  UiUi.T.SETnVAL<UiUi.T.N3, UiUi.T.N1>,
+  UiUi.T.SETnVAL<{ min: number; max: number; step: number }, number>
 >(
   'Slider',
   ({ o, onChange }) => {
     const thumbRef = React.useRef<HTMLDivElement>(null);
     const [value, setValue] = React.useState(o.value[0]);
-    const [props, setProps] = React.useState<U.THREE_NUMBERS>([0, 1, 0.01]);
+    const [props, setProps] = React.useState<UiUi.T.N3>([0, 1, 0.01]);
 
     const updateWidth = (val: string) =>
       thumbRef.current?.style.setProperty('--width', val);
 
-    const pcent = (s: U.THREE_NUMBERS, v: number) =>
+    const pcent = (s: UiUi.T.N3, v: number) =>
       `${((v - s[0]) / (s[1] - s[0])) * 100}%`;
 
     React.useEffect(() => {
@@ -63,13 +55,21 @@ export const UiUiSlider = UiUi.Lib.addElement<
   },
   {
     styles: sliderStyles,
-    builder: (Tag, mixCfg, o, opts) => {
-      const s = mixCfg.settings;
-      o.settings = Array.isArray(s)
-        ? (s as U.THREE_NUMBERS)
+    builder: (Tag, mixedConfig, finalConfig, options) => {
+      const s = mixedConfig.settings;
+      finalConfig.settings = Array.isArray(s)
+        ? (s as UiUi.T.N3)
         : [s.min, s.max, s.step];
-      o.value = Array.isArray(mixCfg.value) ? mixCfg.value : [mixCfg.value];
-      return <Tag key={o.label} o={o} onChange={opts.onChange} />;
+      finalConfig.value = Array.isArray(mixedConfig.value)
+        ? mixedConfig.value
+        : [mixedConfig.value];
+      return (
+        <Tag
+          key={finalConfig.label}
+          o={finalConfig}
+          onChange={options.onChange}
+        />
+      );
     },
   }
 );

@@ -1,38 +1,9 @@
-import { UiUiLib } from './lib';
-
-type ElemBuilderOpts = {
-  onChange?: (o: any) => void;
-  isRoot?: boolean;
-  [key: string]: any;
-};
-type ElemBuilder<CFG extends Object = any> = (
-  a: CFG,
-  opts: ElemBuilderOpts
-) => JSX.Element;
+import { Library } from './Library';
 
 export namespace Config {
-  export type Builder<A, B> = ElemBuilder<Alt<A, B>>;
-  export type Obj<T, S, V> = {
-    type?: T;
-    label: string;
-    settings: S;
-    value: V;
-  };
-  export type Args<O> = {
-    o: O;
-    onChange?: (o: O) => void;
-  };
-  export type Alt<A, B> = {
-    [K in keyof A]: K extends keyof B ? A[K] | B[K] : A[K];
-  };
-  export type AltArgs<A, B> = Args<Alt<A, B>>;
-  export type Elem = {
-    type: string;
-    label: string;
-    settings: any;
-    value: any;
-  };
+  type Elem = Library.Element.Config;
   export type Json = Elem[];
+
   export type ProcessorInfo = {
     elements: {
       [key: string]: {
@@ -90,13 +61,14 @@ export namespace Config {
     });
     return ret;
   };
+
   export const render = (
     els: Elem | Elem[],
-    opts: ElemBuilderOpts
+    opts: Library.Element.BuilderOpts
   ): JSX.Element[] => {
     return (!Array.isArray(els) ? [els] : els)
       .map((e: Elem) =>
-        UiUiLib.has(e.type) ? UiUiLib.build(e.type, e, opts) : null
+        Library.has(e.type) ? Library.build(e.type, e, opts) : null
       )
       .filter((e) => e !== null) as JSX.Element[];
   };

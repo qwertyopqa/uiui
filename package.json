@@ -1,6 +1,6 @@
 {
   "name": "@opqa/uiui",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "keywords": [],
   "description": "",
   "main": "dist/index.min.js",
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-eslint": "^9.0.5",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@types/react": "^18.2.66",
@@ -40,10 +41,20 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-promise": "^2.0.2",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^17.7.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "eslint-plugin-standard": "^5.0.0",
     "glslcv": "^0.0.9",
     "node-sass": "^9.0.0",
+    "postcss": "^8.4.38",
+    "prettier": "^3.2.5",
     "react": ">=18",
     "react-dom": ">=18",
     "rollup": "^3.23.0",
@@ -56,13 +67,15 @@
     "sass": "^1.77.2",
     "typescript": "^5.2.2"
   },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "./node_modules/.bin/prettier --write",
       "./node_modules/.bin/eslint"
     ]
-  },
-  "dependencies": {
-    "postcss": "^8.4.38"
   }
 }

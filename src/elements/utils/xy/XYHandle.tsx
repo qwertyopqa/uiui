@@ -1,9 +1,9 @@
 import React from 'react';
 import XYStyles from './XY.module.scss';
 import { XYStepCtrls } from './types';
-import { getDragabbleArea, setElemPos } from '../../../utils/dom';
-import { DragOnParentDelegate } from '../../../utils/delegate';
-import { TWO_NUMBERS } from '../../../utils/numbers';
+import { getDragabbleArea, setElemPos } from 'utils/dom';
+import { DragOnParentDelegate } from 'utils/delegate';
+import { T } from 'utils/t';
 
 type DragInfo = {
   normalized: { x: number; y: number };
@@ -17,25 +17,25 @@ type Options = {
 };
 
 type Args = {
-  value: TWO_NUMBERS;
+  value: T.N2;
   stepCtrls: XYStepCtrls;
-  onChange: (key: string, v: TWO_NUMBERS) => void;
+  onChange: (key: string, v: T.N2) => void;
   options?: Partial<Options>;
 };
 
-function denorm(v: TWO_NUMBERS, c: XYStepCtrls, opts: Options): TWO_NUMBERS {
+function denorm(v: T.N2, c: XYStepCtrls, opts: Options): T.N2 {
   v[0] = c.x.denormalize(opts.flipX ? 1 - v[0] : v[0]);
   v[1] = c.y.denormalize(opts.flipY ? 1 - v[1] : v[1]);
   return v;
 }
 
-function norm(v: TWO_NUMBERS, c: XYStepCtrls, opts: Options): TWO_NUMBERS {
-  const r = [c.x.normalize(v[0]), c.y.normalize(v[1])] as TWO_NUMBERS;
+function norm(v: T.N2, c: XYStepCtrls, opts: Options): T.N2 {
+  const r = [c.x.normalize(v[0]), c.y.normalize(v[1])] as T.N2;
   return [opts.flipX ? 1 - r[0] : r[0], opts.flipY ? 1 - r[1] : r[1]];
 }
 
 function updateDisplay(
-  v: TWO_NUMBERS,
+  v: T.N2,
   c: XYStepCtrls,
   e: HTMLElement | null,
   opts: Options

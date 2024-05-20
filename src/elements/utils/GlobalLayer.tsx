@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from './GlobalLayer.module.scss';
+import GlobLayerStyles from './GlobalLayer.module.scss';
 let _singleton: HTMLElement | null = null;
 
 export namespace UtilLayer {
@@ -22,5 +22,5 @@ export function UiUiUtilLayer() {
   React.useEffect(() => {
     _singleton = ref.current;
   }, [ref]);
-  return <div ref={ref} className={styles.utilLayer}></div>;
+  return <div ref={ref} className={GlobLayerStyles.utilLayer}></div>;
 }

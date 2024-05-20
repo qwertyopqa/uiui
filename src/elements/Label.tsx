@@ -1,6 +1,6 @@
 import React from 'react';
 import LabelStyles from './Label.module.scss';
-import { Styles } from '../../styles';
+import { Styles } from '../Styles';
 Styles.register('Label', LabelStyles);
 
 type UiUiLabelOrientation = 'h' | 'v';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Styles } from '../../styles';
+import { Styles } from '../Styles';
 import GroupStyles from './Group.module.scss';
 Styles.register('Group', GroupStyles);
 
@@ -24,6 +24,5 @@ export function UiUiGroup({ children, flow, outterFlow }: Args) {
     };
     return p;
   };
-
   return <div {...props()}>{children}</div>;
 }

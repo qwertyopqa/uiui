@@ -1,5 +1,4 @@
-import { UiUi } from './UiUi';
-import { els } from './UiUi.lib';
-export { UiUi } from './UiUi';
+import { UiUi as UU, addBundle } from './UiUi';
+import bundle from './UiUi.bundle';
 
-UiUi.Lib.register(els);
+export const UiUi = addBundle(UU, bundle);

@@ -2,16 +2,9 @@ import React from 'react';
 import { UiUi } from '../UiUi';
 import SelectStyles from './Select.module.scss';
 
-export const UiUiSelect = UiUi.Lib.addElement<
-  {
-    label: string;
-    settings: { [key: string]: string };
-    value: [string];
-  },
-  {
-    settings: string[];
-    value: string | number;
-  }
+export const UiUiSelect = UiUi.Element<
+  UiUi.T.SETnVAL<UiUi.T.KVP<string>, UiUi.T.S1>,
+  UiUi.T.SETnVAL<UiUi.T.S1, string | number>
 >(
   'Select',
   ({ o, onChange }) => {

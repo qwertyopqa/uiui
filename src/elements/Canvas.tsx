@@ -1,6 +1,6 @@
 import React from 'react';
 import { GLSL } from 'glslcv';
-import styles from './Canvas.module.css';
+import CanvasStyles from './Canvas.module.css';
 import { processGlslCode } from '../utils/glue/processor';
 import { RootElem } from './Root';
 
@@ -69,8 +69,8 @@ export function UiUiCanvas({ code, url, postProcessData, theme }: Args) {
     }
   }, [canvasRef, _code, mw, postProcessData, theme]);
   return (
-    <div className={styles.container}>
-      <canvas ref={canvasRef} className={styles.glsl_canvas}></canvas>
+    <div className={CanvasStyles.container}>
+      <canvas ref={canvasRef} className={CanvasStyles.glsl_canvas}></canvas>
       {uiuiJSX}
     </div>
   );

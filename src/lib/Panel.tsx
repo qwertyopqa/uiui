@@ -1,18 +1,12 @@
 import React from 'react';
 import { UiUi } from '../UiUi';
-import { UiUiLabel } from './utils/Label';
-import { UiUiGroup } from './utils/Group';
 import PanelStyles from './Panel.module.scss';
 
 type Flows = 'row' | 'col';
 
-export const UiUiPanel = UiUi.Lib.addElement<
-  {
-    label: string;
-    settings: { flow: Flows };
-    value: UiUi.Config.Elem[];
-  },
-  { settings: undefined | { flow: undefined } },
+export const UiUiPanel = UiUi.Element<
+  UiUi.T.SETnVAL<{ flow: Flows }, UiUi.Lib.Element.Config[]>,
+  UiUi.T.justSET<undefined | { flow: undefined }>,
   { isRoot?: boolean; outterFlow?: Flows }
 >(
   'Panel',
@@ -21,7 +15,7 @@ export const UiUiPanel = UiUi.Lib.addElement<
 
     React.useEffect(() => {
       setChildren(
-        UiUi.Config.render(o.value, { onChange, outterFlow: o.settings.flow })
+        UiUi.renderConfig(o.value, { onChange, outterFlow: o.settings.flow })
       );
     }, [o, onChange]);
 
@@ -50,8 +44,10 @@ export const UiUiPanel = UiUi.Lib.addElement<
 
     return (
       <div {...props()}>
-        {UiUiLabel.build(o.label)}
-        <UiUiGroup flow={o.settings.flow ?? 'col'}>{children}</UiUiGroup>
+        {UiUi.El.Label.build(o.label)}
+        <UiUi.El.Group flow={o.settings.flow ?? 'col'}>
+          {children}
+        </UiUi.El.Group>
       </div>
     );
   },

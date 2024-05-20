@@ -1,12 +1,8 @@
 import React from 'react';
 import { UiUi } from '../UiUi';
-import { SIX_NUMBERS, THREE_NUMBERS, TWO_NUMBERS } from 'utils/numbers';
-import { XY } from './utils/XY';
-import { UiUiLabel } from './utils/Label';
-
 import RampStyles from './ColorRamp.module.scss';
 
-const rampShaderCode = `#version 300 es
+const fragShaderCode = `#version 300 es
 precision mediump float;
 float MPI2 = 6.2831853;
 out vec4 fragColor;
@@ -20,30 +16,28 @@ void main(){
   fragColor = vec4(c ,1.);
 }`;
 
-export const UiUiColorRamp = UiUi.Lib.addElement<
-  UiUi.Config.Obj<'color_ramp', [], SIX_NUMBERS>
->(
+export const UiUiColorRamp = UiUi.Element<UiUi.T.SETnVAL<[], UiUi.T.N2>>(
   'ColorRamp',
   ({ o, onChange }) => {
     const [values, setValues] = React.useState(o.value);
-    const dSS = [0, 1, 0.01] as THREE_NUMBERS;
-    const stepCtrls = XY.Step.getCtrlsFromArray({
+    const dSS = [0, 1, 0.01] as UiUi.T.N3;
+    const stepCtrls = UiUi.XY.Step.getCtrlsFromArray({
       x: dSS,
       y: dSS,
     });
     const options = {
       autoPlay: false,
-    } as XY.Canvas.BckgdOptions;
+    } as UiUi.XY.Canvas.BckgdOptions;
 
     const withRGB = (id: string, cb: (a: number, b: number) => any) => {
       const i = 'rgb'.indexOf(id);
       return i === -1 ? null : cb(i, i + 3);
     };
 
-    const getV = (id: string): TWO_NUMBERS =>
+    const getV = (id: string): UiUi.T.N2 =>
       withRGB(id, (a, b) => [values[a], values[b]]) ?? [0, 0];
 
-    const setV = (id: string, v: TWO_NUMBERS) =>
+    const setV = (id: string, v: UiUi.T.N2) =>
       withRGB(id, (a, b) => {
         values[a] = v[0];
         values[b] = v[1];
@@ -51,44 +45,37 @@ export const UiUiColorRamp = UiUi.Lib.addElement<
         setValues(values);
       });
 
-    function onUpdate(id: string, vs: TWO_NUMBERS) {
+    function onUpdate(id: string, vs: UiUi.T.N2) {
       setV(id, vs);
       if (onChange) onChange(o);
       if (options.callbacks?.refresh) options.callbacks.refresh();
     }
 
-    const onUniformsUpdate: XY.Canvas.Callback = (us) => {
+    const onUniformsUpdate: UiUi.XY.Canvas.Callback = (us) => {
       if (values)
         us.forEach((u) => (u.value = u.name === 'c' ? values : u.value));
     };
 
-    const getHandleJsx = (id: string) => (
-      <XY.Handle
-        options={{ id, label: id.toUpperCase() }}
-        value={getV(id)}
-        stepCtrls={stepCtrls}
-        onChange={onUpdate}
-      />
-    );
+    const gHP = (id: string) => ({
+      stepCtrls,
+      options: { id, label: id.toUpperCase() },
+      value: getV(id),
+      onChange: onUpdate,
+    });
 
     const styles = UiUi.useTheme().ns('ColorRamp');
 
     return (
       <div className={styles.element}>
-        {UiUiLabel.build({ label: o.label, orientation: 'v' })}
-        <XY.Pad
-          background={
-            <XY.Canvas.Bckgd
-              fragShaderCode={rampShaderCode}
-              onUniformsUpdate={onUniformsUpdate}
-              options={options}
-            />
-          }
-        >
-          {getHandleJsx('r')}
-          {getHandleJsx('g')}
-          {getHandleJsx('b')}
-        </XY.Pad>
+        {UiUi.El.Label.build({ label: o.label, orientation: 'v' })}
+        <UiUi.El.XY>
+          <UiUi.El.XYCanvas
+            {...{ fragShaderCode, onUniformsUpdate, options }}
+          />
+          <UiUi.El.XYHandle {...gHP('r')} />
+          <UiUi.El.XYHandle {...gHP('g')} />
+          <UiUi.El.XYHandle {...gHP('b')} />
+        </UiUi.El.XY>
       </div>
     );
   },
